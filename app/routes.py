@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, HTTPException, Query
 from app.database import employees_collection
+from app.utils import calculate_attrition
 import math
 
 router = APIRouter()
@@ -50,6 +51,7 @@ def get_employees(
         "employees": employees
     }
 
+
 @router.get(
     "/employee/{emp_id}",
     tags=["Employees"],
@@ -63,11 +65,13 @@ def get_employee(emp_id: str):
     )
 
     if employee is None:
-        return {
-            "message": "Employee not found"
-        }
+        raise HTTPException(
+            status_code=404,
+            detail="Employee not found"
+        )
 
     return employee
+
 
 @router.get(
     "/departments",
@@ -102,25 +106,15 @@ def get_departments():
 
     return result
 
+
 @router.get(
     "/attrition",
     tags=["Analytics"],
     summary="Get overall attrition statistics"
 )
 def get_attrition():
+    return calculate_attrition()
 
-    total_employees = employees_collection.count_documents({})
-    attrition_yes = employees_collection.count_documents({"Attrition": "Yes"})
-    attrition_no = employees_collection.count_documents({"Attrition": "No"})
-
-    attrition_rate = round((attrition_yes / total_employees) * 100, 2)
-
-    return {
-        "total_employees": total_employees,
-        "employees_with_attrition": attrition_yes,
-        "employees_without_attrition": attrition_no,
-        "attrition_rate": f"{attrition_rate}%"
-    }
 
 @router.get(
     "/dashboard",
@@ -132,7 +126,11 @@ def get_dashboard():
     total_employees = employees_collection.count_documents({})
     attrition_yes = employees_collection.count_documents({"Attrition": "Yes"})
 
-    attrition_rate = round((attrition_yes / total_employees) * 100, 2)
+    attrition_rate = (
+        round((attrition_yes / total_employees) * 100, 2)
+        if total_employees > 0
+        else 0
+    )
 
     pipeline = [
         {
