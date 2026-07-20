@@ -1,11 +1,18 @@
+"""
+MongoDB database configuration.
+
+Creates the MongoDB client and provides access to the
+WorkforceDB database and employees collection.
+"""
+
 from pymongo import MongoClient
 from app.config import MONGODB_URI
 
-# Create MongoDB client
+# Create a MongoDB client using the connection string
 client = MongoClient(MONGODB_URI)
 
-# Select database
+# Access the Workforce database
 db = client["WorkforceDB"]
 
-# Select collection
+# Access the employees collection
 employees_collection = db["employees"]

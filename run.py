@@ -1,5 +1,6 @@
 import uvicorn
 
+# Start the FastAPI application
 if __name__ == "__main__":
     uvicorn.run(
         "app.main:app",

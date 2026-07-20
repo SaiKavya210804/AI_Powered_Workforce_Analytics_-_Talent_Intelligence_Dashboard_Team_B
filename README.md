@@ -2,77 +2,157 @@
 
 ## Overview
 
-This project is being developed as part of the Infosys Springboard Internship.
+The **AI-Powered Workforce Analytics & Talent Intelligence Dashboard** is being developed as part of the **Infosys Springboard Internship**.
 
-The objective of this project is to build an AI-powered workforce analytics platform using MongoDB Atlas, FastAPI, Google Cloud Platform (GCP), BigQuery, Vertex AI, and an interactive dashboard for workforce insights.
+This project aims to build an intelligent workforce analytics platform that provides HR insights using **FastAPI**, **MongoDB Atlas**, **Google Cloud Platform (GCP)**, **BigQuery**, **Vertex AI**, and a **React-based dashboard**.
 
----
-
-## Prerequisites
-
-Before setting up the project, ensure you have:
-
-- Python 3.13 or later
-- Git
-- Visual Studio Code (recommended)
-- A MongoDB Atlas account or access to the shared project database
+The platform enables employee management, workforce analytics, department insights, attrition analysis, and AI-powered decision support.
 
 ---
 
-## Project Status
+# Features
 
-🚧 Currently under active development.
+### Employee Management
+- Employee CRUD APIs
+- Employee search by Employee ID
+- Employee pagination
 
-The backend setup, MongoDB integration, and API development are in progress. Additional features such as GCP integration, BigQuery, Vertex AI, and the analytics dashboard will be added in upcoming phases.
+### Workforce Analytics
+- Dashboard Overview
+- Attrition Analytics
+- Department Analytics
+- Gender Distribution
+- Job Role Distribution
+- Salary Analytics
+- Age Analytics
+- Employee Wellbeing Analytics
+- Experience Summary
+- Job Satisfaction Distribution
+- Work-Life Balance Distribution
+- Salary Distribution by Department
+- Age Group Distribution
 
-### Completed
+### API Documentation
 
-- ✅ Data preprocessing completed
-- ✅ MongoDB Atlas database created
-- ✅ 10,000 employee records imported into MongoDB
-- ✅ FastAPI backend initialized
-- ✅ MongoDB connected successfully
-- ✅ Swagger API documentation enabled
+- Interactive Swagger UI
+- Automatic request/response documentation
 
 ---
 
-## Roadmap
+# Project Status
 
-- ✅ Data Preprocessing
-- ✅ MongoDB Atlas Integration
+🚧 The project is currently under active development.
+
+## Completed
+
+- ✅ Workforce dataset preparation
+- ✅ Data cleaning and preprocessing
+- ✅ Dataset expansion to 10,000 employee records
+- ✅ MongoDB Atlas database setup
+- ✅ MongoDB integration with FastAPI
+- ✅ Modular FastAPI backend
+- ✅ Employee CRUD APIs
+- ✅ Workforce Analytics APIs
+- ✅ Dashboard APIs
+- ✅ Swagger API documentation
+- ✅ MongoDB connection testing
+
+## In Progress
+
+- 🔄 Google Cloud Platform Integration
+- 🔄 React Dashboard Development
+- 🔄 Vertex AI Integration
+- 🔄 Workflow Automation
+
+---
+
+# Development Roadmap
+
+## Phase 1 – Data Collection
+- ✅ Dataset Collection
+
+## Phase 2 – Data Preparation
+- ✅ Data Cleaning
+- ✅ Data Augmentation
+- ✅ Dataset Preparation
+
+## Phase 3 – Database
+- ✅ MongoDB Atlas
+- ✅ Employee Collection
+- ✅ Data Import
+
+## Phase 4 – Backend Development
 - ✅ FastAPI Project Setup
-- 🔄 Employee APIs
-- 🔄 Department Analytics APIs
-- 🔄 Attrition Analytics
-- ⏳ Google Cloud Platform (GCP)
-- ⏳ BigQuery
-- ⏳ Dataform
-- ⏳ Vertex AI
-- ⏳ Dashboard Development
-- ⏳ Deployment
+- ✅ MongoDB Connection
+- ✅ REST API Development
+- ✅ Analytics APIs
+- ✅ API Testing (Swagger)
+
+## Phase 5 – Google Cloud Platform
+- 🔄 Cloud Storage
+- 🔄 ETL Pipeline
+- 🔄 Cloud Composer
+- 🔄 BigQuery
+- 🔄 Dataform
+
+## Phase 6 – Frontend
+- 🔄 React Dashboard
+
+## Phase 7 – Vertex AI
+- 🔄 Gemini Integration
+
+## Phase 8 – Automation
+- 🔄 Cloud Composer Workflow Automation
+
+---
+
+# Technology Stack
+
+## Backend
+
+- Python 3.13
+- FastAPI
+- Uvicorn
+- PyMongo
+- Pydantic
+- python-dotenv
+
+## Database
+
+- MongoDB Atlas
+
+## Cloud (Upcoming)
+
+- Google Cloud Platform
+- Cloud Storage
+- BigQuery
+- Dataform
+- Cloud Composer
+- Vertex AI
+
+## Frontend (Upcoming)
+
+- React
 
 ---
 
 # Getting Started
 
-> **Note:** These setup instructions have been tested on Windows PowerShell. If you're using macOS or Linux, the commands to activate the virtual environment will be different.
+> **Note:** These setup instructions have been tested on Windows PowerShell.
 
 ---
 
-## Step 1: Clone the Repository
+## Step 1 — Clone the Repository
 
 ```bash
 git clone https://github.com/SaiKavya210804/AI_Powered_Workforce_Analytics_-_Talent_Intelligence_Dashboard_Team_B.git
+
 cd AI_Powered_Workforce_Analytics_-_Talent_Intelligence_Dashboard_Team_B
 ```
 
-> The repository already contains the required project structure. Do not recreate folders manually unless instructed.
-
 ---
 
-## Step 2: Create a Virtual Environment
-
-Windows
+## Step 2 — Create Virtual Environment
 
 ```bash
 python -m venv venv
@@ -80,7 +160,7 @@ python -m venv venv
 
 ---
 
-## Step 3: Activate the Virtual Environment
+## Step 3 — Activate Virtual Environment
 
 PowerShell
 
@@ -88,17 +168,15 @@ PowerShell
 .\venv\Scripts\Activate.ps1
 ```
 
-You should now see:
+Expected
 
 ```text
 (venv)
 ```
 
-before your terminal prompt.
-
 ---
 
-## Step 4: Install Project Dependencies
+## Step 4 — Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -106,34 +184,31 @@ pip install -r requirements.txt
 
 ---
 
-## Step 5: Create the Environment File
+## Step 5 — Configure Environment Variables
 
-Create a file named:
+Create a file named
 
 ```text
 .env
 ```
 
-inside the project root.
-
-Add the following:
+Add
 
 ```env
 MONGODB_URI=your_mongodb_connection_string
 ```
 
-> **Note:** Do not commit your `.env` file to GitHub. The MongoDB connection string will be shared securely by the project owner.
-> Contact the project owner to obtain the MongoDB connection string securely.
+> **Important:** Never commit the `.env` file to GitHub.
 
 ---
 
-## Step 6: Run the FastAPI Server
+## Step 6 — Run the Application
 
 ```bash
 python run.py
 ```
 
-If everything is configured correctly, you should see:
+Expected output
 
 ```text
 INFO: Uvicorn running on http://127.0.0.1:8000
@@ -141,9 +216,7 @@ INFO: Uvicorn running on http://127.0.0.1:8000
 
 ---
 
-## Step 7: Verify the Application
-
-Open the following URLs in your browser:
+## Step 7 — Verify the Application
 
 ### Home
 
@@ -151,28 +224,28 @@ Open the following URLs in your browser:
 http://127.0.0.1:8000/
 ```
 
-Expected Response
+Expected
 
 ```json
 {
-    "message": "Welcome to the AI-Powered Workforce Analytics API"
+  "message": "Welcome to the AI-Powered Workforce Analytics API"
 }
 ```
 
 ---
 
-### Database Connection Test
+### Database Connection
 
 ```
 http://127.0.0.1:8000/test-db
 ```
 
-Expected Response
+Expected
 
 ```json
 {
-    "status": "Connected Successfully",
-    "total_employees": 10000
+  "status": "Connected Successfully",
+  "total_employees": 10000
 }
 ```
 
@@ -184,23 +257,68 @@ Expected Response
 http://127.0.0.1:8000/docs
 ```
 
-Swagger UI should display all available API endpoints.
+Swagger UI displays all available APIs.
 
 ---
 
-## Project Structure
+# Available API Endpoints
+
+| Category | Endpoint |
+|----------|----------|
+| Home | `/` |
+| Database | `/test-db` |
+| Employees | `/employees` |
+| Employees | `/employee/{emp_id}` |
+| Departments | `/departments` |
+| Dashboard | `/dashboard` |
+| Analytics | `/attrition` |
+| Analytics | `/gender-distribution` |
+| Analytics | `/job-role-distribution` |
+| Analytics | `/salary-analytics` |
+| Analytics | `/age-analytics` |
+| Analytics | `/employee-wellbeing` |
+| Analytics | `/attrition-by-department` |
+| Analytics | `/experience-summary` |
+| Analytics | `/job-satisfaction` |
+| Analytics | `/work-life-balance` |
+| Analytics | `/salary-distribution` |
+| Analytics | `/age-distribution` |
+
+---
+
+# Project Architecture
+
+```
+MongoDB Atlas
+      │
+      ▼
+ FastAPI Backend
+      │
+      ▼
+ REST APIs
+      │
+      ▼
+ React Dashboard
+      │
+      ▼
+ Vertex AI (Upcoming)
+```
+
+---
+
+# Project Structure
 
 ```text
 AI_Powered_Workforce_Analytics_-_Talent_Intelligence_Dashboard_Team_B
 │
 ├── app/
 │   ├── __init__.py
-│   ├── config.py
-│   ├── database.py
-│   ├── main.py
-│   ├── models.py
-│   ├── routes.py
-│   └── utils.py
+│   ├── config.py          # Environment configuration
+│   ├── database.py        # MongoDB connection
+│   ├── main.py            # FastAPI application
+│   ├── models.py          # Pydantic models
+│   ├── routes.py          # API endpoints
+│   └── utils.py           # Analytics utility functions
 │
 ├── .gitignore
 ├── README.md
@@ -208,44 +326,24 @@ AI_Powered_Workforce_Analytics_-_Talent_Intelligence_Dashboard_Team_B
 └── run.py
 ```
 
-> **Local files (not committed to GitHub):**
->
-> - `.env`
-> - `venv/`
-
 ---
 
-# Important Notes
+# GitHub Rules
 
-### Do NOT upload the following files to GitHub
+Never upload
 
-- `venv/`
 - `.env`
+- `venv/`
 - `__pycache__/`
 
-These files are machine-specific or contain sensitive information.
-
----
-
-## Configure `.gitignore`
-
-Ensure your `.gitignore` contains:
+Example `.gitignore`
 
 ```gitignore
-# Virtual Environment
 venv/
-
-# Environment Variables
 .env
-
-# Python Cache
 __pycache__/
 *.pyc
-
-# VS Code Settings
 .vscode/
-
-# macOS
 .DS_Store
 ```
 
@@ -253,104 +351,83 @@ __pycache__/
 
 # How to Contribute
 
-1. Pull the latest changes from the repository.
-2. Create a new branch for your work.
+1. Pull the latest changes.
 
 ```bash
-git checkout -b feature/your-feature-name
+git pull
+```
+
+2. Create a feature branch.
+
+```bash
+git checkout -b feature/feature-name
 ```
 
 3. Make your changes.
-4. Test the application locally.
-5. Commit your changes.
+
+4. Test the application.
+
+5. Commit.
 
 ```bash
 git add .
 git commit -m "Describe your changes"
 ```
 
-6. Push your branch.
+6. Push.
 
 ```bash
-git push origin feature/your-feature-name
+git push origin feature/feature-name
 ```
 
-7. Create a Pull Request on GitHub for review.
+7. Create a Pull Request.
 
 ---
 
-# Repository Rules
+# Future Enhancements
 
-To keep the project organized, please follow these guidelines:
-
-- Do not commit the `.env` file.
-- Do not commit the `venv/` folder.
-- Always pull the latest changes before starting work.
-- Create a new branch for every feature or bug fix.
-- Write clear and meaningful commit messages.
-- Test your code before pushing.
-- Create a Pull Request before merging into the `main` branch.
-- Keep the README and requirements.txt updated when making significant changes.
+- Google Cloud Storage Integration
+- ETL Pipeline
+- BigQuery Analytics
+- Dataform Transformations
+- React Dashboard
+- Vertex AI Chatbot
+- Predictive Attrition Analytics
+- Automated Workforce Pipelines
 
 ---
 
-> **Note:** During the initial development phase, the project owner may commit directly to the `main` branch. Once multiple contributors start developing features simultaneously, all contributions should be made through feature branches and Pull Requests.
+# Contributors
 
-## Current Technologies
+Developed as part of the **Infosys Springboard Internship**.
 
-- Python 3.13
-- FastAPI
-- Uvicorn
-- MongoDB Atlas
-- PyMongo
-- Pydantic
-- Pandas
-- Python Dotenv
-
-## Planned Technologies
-
-- Google Cloud Platform (GCP)
-- Cloud Storage
-- BigQuery
-- Dataform
-- Vertex AI
-- React / Streamlit
-
----
-
-## Contributors
-
-This project is being developed as part of the Infosys Springboard Internship.
-
-Current Team Members:
+### Team Members
 
 - Sai Kavya (Project Owner)
 - Vidushi Bhardwaj
 - Vishnu Vardhan
 - Ankit Rajak
 - Bhagyashri Shinde
-- Gayatri Jarajapu 
+- Gayatri Jarajapu
 - GVL Sahithi
 - Sudeekshaa
 
-> Remaining team members will be added as they join the repository.
-
 ---
 
-## License
+# License
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+This project is licensed under the **MIT License**.
 
 ---
 
 # Internship
 
-Developed as part of the **Infosys Springboard Internship Program**.
+Developed under the **Infosys Springboard Internship Program**.
 
 ---
 
-## Project Maintainer
+# Project Maintainer
 
-**Project Owner:** Sai Kavya
+**Sai Kavya**
 
-For setup issues, repository access, or project-related queries, please contact the project owner.
+For project setup, repository access, or technical queries, please contact the project owner.

@@ -6,11 +6,20 @@ venv/
 
 # Python Cache
 __pycache__/
-*.pyc
+*.py[cod]
 
-# VS Code
+# IDE Settings
 .vscode/
+.idea/
 
 # Operating System
 .DS_Store
 Thumbs.db
+
+# Pytest Cache
+.pytest_cache/
+
+# Build Files
+build/
+dist/
+*.egg-info/
