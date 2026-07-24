@@ -1,7 +1,7 @@
+import AppRoutes from "./routes/AppRoutes";
+
 function App() {
-  return (
-    <h1>AI-Powered Workforce Dashboard</h1>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
