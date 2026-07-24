@@ -4,13 +4,20 @@ import { Outlet } from "react-router-dom";
 
 function Layout() {
   return (
-    <div>
-      <Sidebar />
-      <TopNavbar />
+    <div className="app-layout">
 
-      <main>
-        <Outlet />
-      </main>
+      <Sidebar />
+
+      <div className="main-section">
+
+        <TopNavbar />
+
+        <main className="page-container">
+          <Outlet />
+        </main>
+
+      </div>
+
     </div>
   );
 }
