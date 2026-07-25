@@ -1,6 +1,6 @@
 # AI-Powered Workforce Analytics & Talent Intelligence Dashboard
 
-# Frontend Application
+## Frontend Application
 
 ## Overview
 
@@ -12,6 +12,7 @@ The frontend is built using **React + Vite** and provides the user interface for
 - Employee management
 - Workforce analytics
 - AI-powered workforce assistant
+- Reports and utility modules
 - User navigation and interaction
 
 The frontend communicates with the FastAPI backend through REST APIs.
@@ -20,309 +21,218 @@ The frontend communicates with the FastAPI backend through REST APIs.
 
 # Technology Stack
 
-## Frontend Technologies
+## Frontend
 
 - React
 - Vite
 - JavaScript
 - Axios
 - CSS
+- Recharts
+- React Router
 
 ## Backend Communication
 
 - FastAPI REST APIs
-- MongoDB Atlas (accessed through backend APIs)
+- MongoDB Atlas through backend services
 
 ---
 
 # Current Development Status
 
-🚧 Frontend development is currently in progress.
+🚧 Frontend development is in progress.
 
-The frontend foundation has been completed and the remaining development work is divided into independent modules.
+The frontend architecture and common layout are completed.
+
+Development is divided into independent feature modules:
+
+1. Dashboard & Analytics
+2. Employee Management
+3. AI Assistant & Utility Modules
 
 ---
 
-# Completed Work
+# Completed Common Foundation
 
 ## 1. React Application Setup
 
 Completed:
 
-✅ React project created using Vite
-
-✅ Project structure organized
-
-✅ Development environment configured
-
-✅ Dependencies installed
+- ✅ React project created using Vite
+- ✅ Development environment configured
+- ✅ Dependencies installed
+- ✅ Folder structure organized
 
 ---
 
-# 2. Application Layout
+## 2. Application Layout
 
-Location:
+### Location
 
-```
+```text
 src/components/layout/
 ```
 
-Implemented components:
+### Implemented Components
 
-```
+```text
 components
-
 └── layout
-
     ├── Layout.jsx
     ├── Sidebar.jsx
     └── TopNavbar.jsx
 ```
 
-
-## Layout.jsx
-
-Responsible for:
-
-- Common application structure
-- Combining Sidebar and TopNavbar
-- Maintaining overall dashboard layout
-
-
-## Sidebar.jsx
+### Layout.jsx
 
 Responsible for:
 
+- Overall application structure
+- Combining sidebar and navbar
+- Maintaining common page layout
+
+### Sidebar.jsx
+
+Responsible for:
+
+- Application navigation
 - Dashboard navigation
-- Employees navigation
+- Employee navigation
 - Analytics navigation
-- AI Assistant navigation
+- AI assistant navigation
 - Settings navigation
 
-
-## TopNavbar.jsx
+### TopNavbar.jsx
 
 Responsible for:
 
 - Application title
-- Admin/user section
+- User section
 - Top navigation area
 
 ---
 
-# 3. Routing System
+## 3. Routing System
 
-Location:
+### Location
 
-```
+```text
 src/routes/AppRoutes.jsx
 ```
 
 Implemented:
 
-- Page navigation
 - Route management
-- Connecting pages with layout
+- Page navigation
+- Layout integration
 
+### Current Routes
 
-Current routes:
-
-```
+```text
 /dashboard
-
 /employees
-
 /analytics
-
 /ai-assistant
-
 /settings
 ```
 
 ---
 
-# 4. Pages Created
+## 4. Service Layer
 
-Location:
+### Location
 
-```
-src/pages/
-```
-
-Current page structure:
-
-```
-pages
-
-├── Dashboard
-│   └── Dashboard.jsx
-│
-├── Employees
-│   └── Employees.jsx
-│
-├── Analytics
-│   └── Analytics.jsx
-│
-├── AIAssistant
-│   └── AIAssistant.jsx
-│
-└── Settings
-    └── Settings.jsx
-```
-
-
-Current status:
-
-- Page folders created
-- Basic page components created
-- Routing completed
-- Individual module development pending
-
----
-
-# 5. AI Assistant Integration
-
-Status:
-
-✅ Completed
-
-
-Files:
-
-```
-src/pages/AIAssistant/AIAssistant.jsx
-
-src/services/aiService.js
-```
-
-
-Implemented features:
-
-- User question input
-- API request handling
-- Loading state
-- AI response display
-
-
-Backend API connected:
-
-```
-POST /ask-ai
-```
-
-
-Request example:
-
-```json
-{
-  "question": "What is the attrition rate?"
-}
-```
-
-
-Response example:
-
-```json
-{
-  "answer": "The attrition rate is 15.6%"
-}
-```
-
----
-
-# API Service Layer
-
-Location:
-
-```
+```text
 src/services/
 ```
 
-
-Current implementation:
-
-```
-services
-
-└── aiService.js
-```
-
-
 Purpose:
 
-- Central location for API communication
+- Centralized API communication
 - Axios configuration
 - Separation of backend calls from UI components
 
+### Current Services
 
-Future service files:
-
-```
+```text
 services
-
+├── api.js
 ├── aiService.js
 ├── dashboardService.js
-├── employeeService.js
 └── analyticsService.js
 ```
 
-
 ---
 
-# Frontend Folder Structure
+# Current Folder Structure
 
-Current structure:
-
-```
+```text
 frontend
-
 │
 ├── public
 │
 ├── src
-│
 │   ├── assets
 │   │
 │   ├── components
-│   │   └── layout
-│   │       ├── Layout.jsx
-│   │       ├── Sidebar.jsx
-│   │       └── TopNavbar.jsx
+│   │   ├── layout
+│   │   │   ├── Layout.jsx
+│   │   │   ├── Sidebar.jsx
+│   │   │   └── TopNavbar.jsx
+│   │   │
+│   │   ├── cards
+│   │   │   └── MetricCard.jsx
+│   │   │
+│   │   ├── charts
+│   │   │   ├── GenderDistributionChart.jsx
+│   │   │   ├── AttritionChart.jsx
+│   │   │   ├── DepartmentChart.jsx
+│   │   │   ├── JobRoleChart.jsx
+│   │   │   ├── SalaryChart.jsx
+│   │   │   ├── AgeChart.jsx
+│   │   │   ├── SatisfactionChart.jsx
+│   │   │   ├── WorkLifeChart.jsx
+│   │   │   ├── AttritionDepartmentChart.jsx
+│   │   │   ├── WellbeingChart.jsx
+│   │   │   └── SalaryDepartmentChart.jsx
+│   │   │
+│   │   ├── tables
+│   │   ├── forms
+│   │   ├── chatbot
+│   │   └── common
 │   │
 │   ├── pages
-│   │   │
 │   │   ├── Dashboard
 │   │   │   └── Dashboard.jsx
-│   │   │
 │   │   ├── Employees
 │   │   │   └── Employees.jsx
-│   │   │
+│   │   ├── Departments
+│   │   ├── JobRoles
 │   │   ├── Analytics
 │   │   │   └── Analytics.jsx
-│   │   │
 │   │   ├── AIAssistant
 │   │   │   └── AIAssistant.jsx
-│   │   │
-│   │   └── Settings
-│   │       └── Settings.jsx
+│   │   ├── Reports
+│   │   ├── Settings
+│   │   │   └── Settings.jsx
+│   │   └── Login
 │   │
 │   ├── routes
 │   │   └── AppRoutes.jsx
 │   │
 │   ├── services
-│   │   └── aiService.js
+│   │   ├── api.js
+│   │   ├── aiService.js
+│   │   ├── dashboardService.js
+│   │   └── analyticsService.js
 │   │
 │   ├── styles
 │   │   └── layout.css
-│   │
 │   ├── theme
 │   │   └── theme.js
-│   │
 │   ├── utils
-│   │
 │   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
+│   └── main.jsx
 │
 ├── package.json
 └── vite.config.js
@@ -330,32 +240,255 @@ frontend
 
 ---
 
-# How To Run Frontend
+# Development Module Distribution
 
-## Step 1 — Navigate to frontend
+The frontend development is divided among three developers to minimize merge conflicts.
+
+---
+
+# Module 1 — Dashboard & Analytics
+
+**Developer:** Sai Kavya
+
+### Responsibilities
+
+Develop workforce visualization modules.
+
+### Folders
+
+```text
+src/pages/Dashboard/
+src/pages/Analytics/
+src/components/charts/
+src/components/cards/
+```
+
+## Dashboard Module
+
+### Tasks
+
+- Dashboard UI development
+- KPI cards
+- Workforce summary
+- Dashboard API integration
+- Employee overview charts
+
+### APIs
+
+```http
+GET /dashboard
+GET /attrition
+GET /gender-distribution
+GET /departments
+```
+
+## Analytics Module
+
+### Tasks
+
+Create workforce analytics visualizations:
+
+- Attrition analysis
+- Gender distribution
+- Job role distribution
+- Salary analytics
+- Age analytics
+- Employee wellbeing
+- Job satisfaction
+- Work-life balance
+- Department salary analysis
+- Department attrition analysis
+
+### APIs
+
+```http
+GET /attrition
+GET /gender-distribution
+GET /job-role-distribution
+GET /salary-analytics
+GET /age-analytics
+GET /age-distribution
+GET /employee-wellbeing
+GET /experience-summary
+GET /job-satisfaction
+GET /work-life-balance
+GET /salary-distribution
+GET /attrition-by-department
+```
+
+---
+
+# Module 2 — Employee Management
+
+**Developer:** Vishnu Vardhan
+
+### Responsibilities
+
+Develop employee and organizational management modules.
+
+### Folders
+
+```text
+src/pages/Employees/
+src/pages/Departments/
+src/pages/JobRoles/
+src/components/forms/
+src/components/tables/
+```
+
+### Tasks
+
+- Employee listing
+- Employee details
+- Search functionality
+- Filtering
+- Pagination
+- Department management
+- Job role management
+- CRUD operations
+
+### APIs
+
+```http
+GET /employees
+GET /employee/{id}
+POST /employees
+PUT /employees/{id}
+DELETE /employees/{id}
+GET /departments
+```
+
+---
+
+# Module 3 — AI & Utility Modules
+
+**Developer:** Sudeekshaa
+
+### Responsibilities
+
+Develop AI and supporting utility features.
+
+### Folders
+
+```text
+src/pages/AIAssistant/
+src/pages/Reports/
+src/pages/Settings/
+src/components/chatbot/
+src/components/common/
+```
+
+### Tasks
+
+- AI assistant interface
+- Chat interface
+- Prompt handling
+- AI response display
+- Report generation UI
+- Smart alerts
+- Settings page
+- User profile components
+
+### APIs
+
+```http
+POST /ask-ai
+
+Future APIs:
+
+POST /predict
+
+Reports APIs
+
+Smart alert APIs
+```
+
+---
+
+# Current Completed Features
+
+## Dashboard
+
+Completed:
+
+- ✅ Workforce KPI cards
+- ✅ Total employee overview
+- ✅ Department summary
+- ✅ Average age and income metrics
+- ✅ Attrition rate indicator
+- ✅ Gender distribution visualization
+- ✅ Attrition visualization
+- ✅ Department distribution visualization
+
+## Analytics
+
+Completed:
+
+- ✅ Job role distribution chart
+- ✅ Salary analytics chart
+- ✅ Age analytics chart
+- ✅ Job satisfaction chart
+- ✅ Work-life balance chart
+- ✅ Attrition by department chart
+- ✅ Employee wellbeing chart
+- ✅ Salary distribution by department chart
+
+Current implementation contains 8 workforce analytics visualizations:
+
+1. Job Role Distribution
+2. Salary Analytics
+3. Age Analytics
+4. Job Satisfaction
+5. Work-Life Balance
+6. Attrition by Department
+7. Employee Wellbeing
+8. Salary Distribution by Department
+
+## AI Assistant
+
+Completed:
+
+- ✅ AI assistant page
+- ✅ User input handling
+- ✅ Backend API connection
+
+### API
+
+```http
+POST /ask-ai
+```
+
+---
+
+# Running the Frontend
+
+## Step 1
+
+Navigate to the frontend directory:
 
 ```bash
 cd frontend
 ```
 
+## Step 2
 
-## Step 2 — Install Dependencies
+Install dependencies:
 
 ```bash
 npm install
 ```
 
+## Step 3
 
-## Step 3 — Start Development Server
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-
 Frontend runs at:
 
-```
+```text
 http://localhost:5173/
 ```
 
@@ -363,238 +496,99 @@ http://localhost:5173/
 
 # Backend Connection
 
-The FastAPI backend must be running before testing API-based features.
+The backend must be running before testing API features.
 
-
-Start backend:
+Start the backend:
 
 ```bash
 cd backend
-
 python run.py
 ```
 
-
 Backend URL:
 
-```
+```text
 http://127.0.0.1:8000
 ```
 
+### Communication Flow
 
-Communication flow:
-
-```
-React Component
-
-        ↓
-
+```text
+React Components
+        │
+        ▼
 Service Layer (Axios)
-
-        ↓
-
+        │
+        ▼
 FastAPI REST API
-
-        ↓
-
+        │
+        ▼
 MongoDB Atlas
 ```
 
 ---
 
-# Pending Frontend Development
+# Git Workflow
 
-The remaining frontend work is divided into three independent modules.
-
-Each member should mainly work inside their assigned folder.
-
----
-
-# Module 1 — Dashboard Development
-
-Folder:
-
-```
-src/pages/Dashboard/
-```
-
-
-Responsibility:
-
-Develop the main workforce dashboard.
-
-
-Tasks:
-
-- Create dashboard UI
-- Create KPI cards
-- Connect dashboard APIs
-- Display workforce summary
-- Add charts and visualizations
-
-
-Expected data:
-
-- Total employees
-- Attrition rate
-- Department statistics
-- Workforce overview
-
-
-Backend API:
-
-```
-GET /dashboard
-```
-
----
-
-# Module 2 — Employee Management Development
-
-Folder:
-
-```
-src/pages/Employees/
-```
-
-
-Responsibility:
-
-Develop employee management interface.
-
-
-Tasks:
-
-- Create employee table
-- Display employee records
-- Add employee search
-- Add pagination
-- Display employee details
-
-
-Backend APIs:
-
-```
-GET /employees
-
-GET /employee/{emp_id}
-```
-
----
-
-# Module 3 — Analytics Dashboard Development
-
-Folder:
-
-```
-src/pages/Analytics/
-```
-
-
-Responsibility:
-
-Develop workforce analytics visualizations.
-
-
-Tasks:
-
-Create charts and visualizations for:
-
-- Attrition analysis
-- Gender distribution
-- Job role distribution
-- Salary analysis
-- Age analysis
-- Employee wellbeing
-- Job satisfaction
-- Work-life balance
-
-
-Backend APIs:
-
-```
-GET /attrition
-
-GET /gender-distribution
-
-GET /job-role-distribution
-
-GET /salary-analytics
-
-GET /age-analytics
-```
-
----
-
-# Development Rules
-
-Before starting work:
+## Pull Latest Changes
 
 ```bash
 git pull
 ```
 
-
-Create a separate feature branch:
-
-Example:
+## Create Feature Branch
 
 ```bash
-git checkout -b feature/dashboard-ui
+git checkout -b feature/dashboard-analytics
 ```
 
-
-After completing changes:
-
-Add only your modified files:
-
-Example:
+## Stage Changes
 
 ```bash
-git add frontend/src/pages/Dashboard/
+git add .
 ```
 
-
-Commit:
+## Commit Changes
 
 ```bash
-git commit -m "Added dashboard UI"
+git commit -m "Added dashboard analytics module"
 ```
 
-
-Push:
+## Push Changes
 
 ```bash
-git push origin feature/dashboard-ui
+git push origin feature/dashboard-analytics
 ```
 
-
-Create a Pull Request after testing.
+Finally, create a Pull Request for review.
 
 ---
 
-# Important Guidelines
+# Development Rules
 
-- Do not modify another member's module without discussion.
+- Do not modify another developer's module without discussion.
 - Keep API calls inside the `services` folder.
-- Keep reusable UI components inside the `components` folder.
-- Test changes before pushing.
-- Pull the latest changes before starting new work.
+- Keep reusable components inside the `components` folder.
+- Test before pushing.
+- Pull the latest changes before starting work.
 - Avoid committing unrelated files.
+- Maintain a modular folder structure.
 
 ---
 
 # Future Improvements
 
-Planned:
+Planned features:
 
-- Advanced charts
-- Improved UI styling
-- Responsive design
-- AI assistant improvements
-- Cloud deployment support
+- Advanced AI predictions
+- Recruitment intelligence
+- Career path recommendations
+- Performance prediction
+- Workflow automation
+- Advanced reporting
+- Responsive mobile design
+- Cloud deployment
 - Real-time analytics
-
 
 ---
 
@@ -602,13 +596,11 @@ Planned:
 
 Developed as part of the **Infosys Springboard Internship**.
 
-
-Frontend Team:
+### Frontend Team
 
 - Sai Kavya
 - Vishnu Vardhan
 - Sudeekshaa
-
 
 ---
 

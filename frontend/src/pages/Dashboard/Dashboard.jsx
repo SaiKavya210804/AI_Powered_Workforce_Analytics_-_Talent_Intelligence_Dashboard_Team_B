@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 
 import MetricCard from "../../components/cards/MetricCard";
 
+
 import GenderDistributionChart from "../../components/charts/GenderDistributionChart";
 import AttritionChart from "../../components/charts/AttritionChart";
 import DepartmentChart from "../../components/charts/DepartmentChart";
 
 
 import { getDashboardData } from "../../services/dashboardService";
+
 
 import {
     getAttritionData,
@@ -31,6 +33,7 @@ function Dashboard() {
 
 
 
+
     useEffect(() => {
 
 
@@ -44,6 +47,7 @@ function Dashboard() {
                     dashboard,
                     attrition,
                     departments
+
                 ] = await Promise.all([
 
                     getDashboardData(),
@@ -65,6 +69,7 @@ function Dashboard() {
 
 
             }
+
 
             catch(error) {
 
@@ -107,6 +112,7 @@ function Dashboard() {
 
 
 
+
     if(
         !dashboardData ||
         !attritionData
@@ -127,8 +133,16 @@ function Dashboard() {
         <div>
 
 
-            <h1>Dashboard</h1>
+            <h1>
+                Dashboard
+            </h1>
 
+
+
+
+            <h2 className="section-title">
+                Workforce Overview
+            </h2>
 
 
 
@@ -143,6 +157,8 @@ function Dashboard() {
 
                     value={dashboardData.total_employees}
 
+                    subtitle="Current workforce size"
+
                 />
 
 
@@ -153,6 +169,8 @@ function Dashboard() {
                     title="Departments"
 
                     value={dashboardData.department_count}
+
+                    subtitle="Active departments"
 
                 />
 
@@ -165,6 +183,8 @@ function Dashboard() {
 
                     value={dashboardData.average_age}
 
+                    subtitle="Employee demographics"
+
                 />
 
 
@@ -175,6 +195,8 @@ function Dashboard() {
                     title="Average Monthly Income"
 
                     value={`$${dashboardData.average_monthly_income.toLocaleString()}`}
+
+                    subtitle="Average employee salary"
 
                 />
 
@@ -187,10 +209,23 @@ function Dashboard() {
 
                     value={dashboardData.attrition_rate}
 
+                    subtitle="Employee turnover percentage"
+
                 />
 
 
+
             </div>
+
+
+
+
+
+
+
+            <h2 className="section-title">
+                Workforce Distribution
+            </h2>
 
 
 
@@ -200,29 +235,58 @@ function Dashboard() {
 
 
 
-                <GenderDistributionChart
-
-                    data={dashboardData.gender_distribution}
-
-                />
 
 
+                <div className="chart-card">
 
 
-                <AttritionChart
+                    <GenderDistributionChart
 
-                    data={attritionData}
+                        data={dashboardData.gender_distribution}
 
-                />
+                    />
 
+
+                </div>
 
 
 
-                <DepartmentChart
 
-                    data={departmentData}
 
-                />
+
+
+                <div className="chart-card">
+
+
+                    <AttritionChart
+
+                        data={attritionData}
+
+                    />
+
+
+                </div>
+
+
+
+
+
+
+
+                <div className="chart-card">
+
+
+                    <DepartmentChart
+
+                        data={departmentData}
+
+                    />
+
+
+                </div>
+
+
+
 
 
             </div>
