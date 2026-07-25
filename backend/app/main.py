@@ -5,8 +5,11 @@ Initializes the FastAPI application and registers all API routes.
 """
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.routes import router
 from app.ai_routes import router as ai_router
+
 
 # Create the FastAPI application
 app = FastAPI(
@@ -17,6 +20,19 @@ app = FastAPI(
     ),
     version="1.0.0",
 )
+
+
+# Allow frontend (React/Vite) to communicate with backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Register all API endpoints
 app.include_router(router)
