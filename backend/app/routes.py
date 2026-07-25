@@ -1,21 +1,24 @@
+import os
 from fastapi import APIRouter, HTTPException, Query, status
+from google import genai
 from app.database import employees_collection
 from app.models import Employee
-from app.utils import (
-    calculate_attrition,
-    calculate_dashboard_statistics,
-    get_gender_distribution,
-    get_job_role_distribution,
-    get_salary_analytics,
-    get_age_analytics,
-    get_employee_wellbeing,
-    get_departments,
-    get_attrition_by_department,
-    get_experience_summary,
-    get_job_satisfaction_distribution,
-    get_work_life_balance_distribution,
-    get_salary_distribution,
-    get_age_distribution
+from app.snowflake_client import (
+    get_attrition_data,
+    get_dashboard_data,
+    get_gender_distribution_data,
+    get_job_role_distribution_data,
+    get_salary_analytics_data,
+    get_age_analytics_data,
+    get_employee_wellbeing_data,
+    get_departments_data,
+    get_attrition_by_department_data,
+    get_experience_summary_data,
+    get_job_satisfaction_distribution_data,
+    get_work_life_balance_distribution_data,
+    get_salary_distribution_data,
+    get_age_distribution_data,
+    run_query,
 )
 
 import math
@@ -53,6 +56,84 @@ def test_database():
     return {
         "status": "Connected Successfully",
         "total_employees": count
+    }
+
+
+@router.get(
+    "/test-snowflake",
+    tags=["Database"],
+    summary="Test Snowflake Connection",
+    description=(
+        "Checks whether Snowflake is connected and returns current session "
+        "context plus employee count from the Snowflake employees table."
+    )
+)
+def test_snowflake():
+    try:
+        session_row = run_query(
+            "SELECT CURRENT_ACCOUNT() AS account, CURRENT_WAREHOUSE() AS warehouse, "
+            "CURRENT_DATABASE() AS database_name, CURRENT_SCHEMA() AS schema_name"
+        )[0]
+        employee_count_row = run_query(
+            "SELECT COUNT(*) AS total_employees FROM employees"
+        )[0]
+    except Exception as exc:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Snowflake connection failed: {str(exc)}"
+        ) from exc
+
+    return {
+        "status": "Connected Successfully",
+        "account": session_row["ACCOUNT"],
+        "warehouse": session_row["WAREHOUSE"],
+        "database": session_row["DATABASE_NAME"],
+        "schema": session_row["SCHEMA_NAME"],
+        "total_employees": employee_count_row["TOTAL_EMPLOYEES"],
+    }
+
+
+@router.get(
+    "/test-ai-key",
+    tags=["Database"],
+    summary="Test Gemini API Key",
+    description=(
+        "Checks whether GEMINI_API_KEY is configured and accepted by Gemini "
+        "for API access."
+    )
+)
+def test_ai_key():
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="GEMINI_API_KEY is missing from environment variables."
+        )
+
+    try:
+        client = genai.Client(api_key=api_key)
+        client.models.generate_content(
+            model="gemini-flash-latest",
+            contents="Reply with exactly: OK"
+        )
+    except Exception as exc:
+        error_message = str(exc)
+        if "RESOURCE_EXHAUSTED" in error_message or "429" in error_message:
+            return {
+                "status": "API key is valid, but quota is exhausted.",
+                "valid_api_key": True,
+                "quota_available": False,
+                "details": error_message,
+            }
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Gemini API key validation failed: {error_message}"
+        ) from exc
+
+    return {
+        "status": "API key is valid and usable.",
+        "valid_api_key": True,
+        "quota_available": True,
     }
 
 
@@ -219,7 +300,7 @@ def delete_employee(emp_id: str):
     description="Returns the list of departments along with the total number of employees in each department."
 )
 def get_departments_route():
-    return get_departments()
+    return get_departments_data()
 
 
 # ==========================================================
@@ -233,7 +314,7 @@ def get_departments_route():
     description="Returns the overall employee attrition statistics."
 )
 def get_attrition():
-    return calculate_attrition()
+    return get_attrition_data()
 
 
 @router.get(
@@ -243,7 +324,7 @@ def get_attrition():
     description="Returns key workforce metrics displayed on the dashboard."
 )
 def get_dashboard():
-    return calculate_dashboard_statistics()
+    return get_dashboard_data()
 
 
 # ==========================================================
@@ -257,7 +338,7 @@ def get_dashboard():
     description="Returns the number of employees grouped by gender."
 )
 def gender_distribution():
-    return get_gender_distribution()
+    return get_gender_distribution_data()
 
 
 @router.get(
@@ -267,7 +348,7 @@ def gender_distribution():
     description="Returns the number of employees for each job role."
 )
 def job_role_distribution():
-    return get_job_role_distribution()
+    return get_job_role_distribution_data()
 
 
 @router.get(
@@ -277,7 +358,7 @@ def job_role_distribution():
     description="Returns salary statistics including average, minimum and maximum salary."
 )
 def salary_analytics():
-    return get_salary_analytics()
+    return get_salary_analytics_data()
 
 
 @router.get(
@@ -287,7 +368,7 @@ def salary_analytics():
     description="Returns workforce age statistics including average, minimum and maximum age."
 )
 def age_analytics():
-    return get_age_analytics()
+    return get_age_analytics_data()
 
 
 @router.get(
@@ -297,7 +378,7 @@ def age_analytics():
     description="Returns employee wellbeing metrics based on satisfaction and work-life balance."
 )
 def employee_wellbeing():
-    return get_employee_wellbeing()
+    return get_employee_wellbeing_data()
 
 
 @router.get(
@@ -307,7 +388,7 @@ def employee_wellbeing():
     description="Returns employee attrition statistics grouped by department."
 )
 def attrition_by_department():
-    return get_attrition_by_department()
+    return get_attrition_by_department_data()
 
 
 @router.get(
@@ -317,7 +398,7 @@ def attrition_by_department():
     description="Returns the average, minimum and maximum years employees have worked in the organization."
 )
 def experience_summary():
-    return get_experience_summary()
+    return get_experience_summary_data()
 
 
 @router.get(
@@ -327,7 +408,7 @@ def experience_summary():
     description="Returns the distribution of employees based on their job satisfaction levels."
 )
 def job_satisfaction():
-    return get_job_satisfaction_distribution()
+    return get_job_satisfaction_distribution_data()
 
 
 @router.get(
@@ -337,7 +418,7 @@ def job_satisfaction():
     description="Returns the distribution of employees based on work-life balance ratings."
 )
 def work_life_balance():
-    return get_work_life_balance_distribution()
+    return get_work_life_balance_distribution_data()
 
 
 @router.get(
@@ -347,7 +428,7 @@ def work_life_balance():
     description="Returns the average monthly salary for each department."
 )
 def salary_distribution():
-    return get_salary_distribution()
+    return get_salary_distribution_data()
 
 
 @router.get(
@@ -357,4 +438,4 @@ def salary_distribution():
     description="Returns employees grouped into predefined age categories."
 )
 def age_distribution():
-    return get_age_distribution()
+    return get_age_distribution_data()
