@@ -9,12 +9,31 @@ import {
 
 
 
-function GenderDistributionChart({ data }) {
+function AttritionChart({ data }) {
+
+
+    const chartData = [
+
+        {
+            name: "Employees Left",
+            value: data.employees_with_attrition
+        },
+
+        {
+            name: "Employees Stayed",
+            value: data.employees_without_attrition
+        }
+
+    ];
+
 
 
     const COLORS = [
-        "#2563eb",
-        "#ec4899"
+
+        "#ef4444",
+
+        "#22c55e"
+
     ];
 
 
@@ -25,7 +44,7 @@ function GenderDistributionChart({ data }) {
 
 
             <h2>
-                Gender Distribution
+                Attrition Overview
             </h2>
 
 
@@ -41,11 +60,11 @@ function GenderDistributionChart({ data }) {
 
                     <Pie
 
-                        data={data}
+                        data={chartData}
 
-                        dataKey="employee_count"
+                        dataKey="value"
 
-                        nameKey="gender"
+                        nameKey="name"
 
                         cx="50%"
 
@@ -58,7 +77,7 @@ function GenderDistributionChart({ data }) {
                     >
 
                         {
-                            data.map((entry, index) => (
+                            chartData.map((entry,index)=>(
 
                                 <Cell
 
@@ -95,4 +114,4 @@ function GenderDistributionChart({ data }) {
 }
 
 
-export default GenderDistributionChart;
+export default AttritionChart;

@@ -10,6 +10,15 @@ export const getAttritionData = async () => {
 };
 
 
+export const getDepartmentData = async () => {
+
+    const response = await api.get("/departments");
+
+    return response.data;
+
+};
+
+
 export const getGenderDistribution = async () => {
 
     const response = await api.get("/gender-distribution");

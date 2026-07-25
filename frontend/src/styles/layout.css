@@ -14,120 +14,137 @@
 
 
 .page-container {
+
     padding: 20px;
+
     flex: 1;
+
+    background: #f8fafc;
+
 }
 
-/* sidebar styles */
+
+/* Sidebar */
 
 .sidebar {
 
-    width:250px;
-    padding:20px;
+    width: 250px;
 
-    background:#111827;
-    color:white;
+    padding: 20px;
+
+    background: #111827;
+
+    color: white;
 
 }
 
 
 .sidebar h2 {
 
-    margin-bottom:30px;
+    margin-bottom: 30px;
 
 }
 
 
 .sidebar nav {
 
-    display:flex;
-    flex-direction:column;
-    gap:10px;
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
 
 }
 
 
 .sidebar a {
 
-    display:flex;
-    align-items:center;
-    gap:12px;
+    display: flex;
 
-    padding:12px;
+    align-items: center;
 
-    color:white;
-    text-decoration:none;
+    gap: 12px;
 
-    border-radius:8px;
+    padding: 12px;
+
+    color: white;
+
+    text-decoration: none;
+
+    border-radius: 8px;
 
 }
 
 
 .sidebar a:hover {
 
-    background:#374151;
+    background: #374151;
 
 }
 
 
 .sidebar .active {
 
-    background:#2563eb;
+    background: #2563eb;
 
 }
 
-/* Top navbar styles */
+
+
+/* Top Navbar */
 
 .top-navbar {
 
-    height:70px;
+    height: 70px;
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    justify-content:space-between;
+    justify-content: space-between;
 
-    padding:0 25px;
+    padding: 0 25px;
 
-    background:white;
+    background: white;
 
-    border-bottom:1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
 
 }
 
 
 .navbar-title {
 
-    font-size:20px;
+    font-size: 20px;
 
-    font-weight:600;
+    font-weight: 600;
 
 }
 
 
 .navbar-actions {
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    gap:20px;
+    gap: 20px;
 
 }
 
 
 .profile {
 
-    display:flex;
+    display: flex;
 
-    align-items:center;
+    align-items: center;
 
-    gap:8px;
+    gap: 8px;
 
 }
 
-/* Dashboard styling: */
+
+
+/* Dashboard KPI Cards */
 
 .dashboard-grid {
 
@@ -137,7 +154,10 @@
 
     gap: 20px;
 
+    margin-bottom: 30px;
+
 }
+
 
 
 .metric-card {
@@ -150,7 +170,17 @@
 
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
+    transition: 0.3s ease;
+
 }
+
+
+.metric-card:hover {
+
+    transform: translateY(-5px);
+
+}
+
 
 
 .metric-card h3 {
@@ -162,6 +192,7 @@
 }
 
 
+
 .metric-card p {
 
     font-size: 28px;
@@ -170,12 +201,26 @@
 
 }
 
-/*Pie Chart styling */
+
+
+/* Charts Section */
+
+
+.dashboard-charts {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 20px;
+
+    margin-top: 30px;
+
+}
+
 
 
 .chart-card {
-
-    margin-top: 30px;
 
     background: white;
 
@@ -185,13 +230,50 @@
 
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 
-    width: fit-content;
-
 }
+
 
 
 .chart-card h2 {
 
     margin-bottom: 15px;
+
+    font-size: 20px;
+
+}
+
+
+
+/* Responsive Design */
+
+@media (max-width: 900px) {
+
+
+    .dashboard-charts {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+}
+
+
+@media (max-width: 600px) {
+
+
+    .sidebar {
+
+        width: 200px;
+
+    }
+
+
+    .page-container {
+
+        padding: 10px;
+
+    }
+
 
 }
