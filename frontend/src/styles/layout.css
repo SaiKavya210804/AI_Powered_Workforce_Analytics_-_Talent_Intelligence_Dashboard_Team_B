@@ -126,3 +126,72 @@
     gap:8px;
 
 }
+
+/* Dashboard styling: */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+
+}
+
+
+.metric-card {
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+}
+
+
+.metric-card h3 {
+
+    font-size: 16px;
+
+    color: #555;
+
+}
+
+
+.metric-card p {
+
+    font-size: 28px;
+
+    font-weight: bold;
+
+}
+
+/*Pie Chart styling */
+
+
+.chart-card {
+
+    margin-top: 30px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+
+    width: fit-content;
+
+}
+
+
+.chart-card h2 {
+
+    margin-bottom: 15px;
+
+}
