@@ -1,9 +1,10 @@
-import API from "./api";
+import api from "./api";
+
 
 export const askAI = async (question) => {
-  const response = await API.post("/ask-ai", {
-    question,
-  });
+    const response = await api.post("/ask-ai", {
+        question,
+    });
 
-  return response.data;
+    return response.data;
 };
