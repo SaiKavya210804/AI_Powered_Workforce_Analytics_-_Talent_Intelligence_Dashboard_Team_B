@@ -4,6 +4,7 @@ import Layout from "../components/layout/Layout";
 
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Employees from "../pages/Employees/Employees";
+import Departments from "../pages/Departments/Departments";
 import Analytics from "../pages/Analytics/Analytics";
 import AIAssistant from "../pages/AIAssistant/AIAssistant";
 import Settings from "../pages/Settings/Settings";
@@ -21,6 +22,12 @@ function AppRoutes() {
                     path="employees" 
                     element={<Employees />} 
                 />
+                <Route
+                    path="departments"
+                    element={<Departments />}
+                />
+
+                
 
                 <Route 
                     path="analytics" 

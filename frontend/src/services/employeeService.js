@@ -1,19 +1,15 @@
 import api from "./api";
 
 
-export const getEmployees = async () => {
+export const getEmployees = async (page = 1, limit = 20) => {
+  const response = await api.get(
+    `/employees?page=${page}&limit=${limit}`
+  );
 
-    const response = await api.get("/employees");
-
-    return response.data;
-
+  return response.data;
 };
 
-
-export const getEmployeeById = async (emp_id) => {
-
-    const response = await api.get(`/employee/${emp_id}`);
-
-    return response.data;
-
+export const getEmployeeById = async (empId) => {
+  const response = await api.get(`/employee/${empId}`);
+  return response.data;
 };
