@@ -6,6 +6,7 @@ Initializes the FastAPI application and registers all API routes.
 
 from fastapi import FastAPI
 from app.routes import router
+from app.ai_routes import router as ai_router
 
 # Create the FastAPI application
 app = FastAPI(
@@ -19,3 +20,4 @@ app = FastAPI(
 
 # Register all API endpoints
 app.include_router(router)
+app.include_router(ai_router)
