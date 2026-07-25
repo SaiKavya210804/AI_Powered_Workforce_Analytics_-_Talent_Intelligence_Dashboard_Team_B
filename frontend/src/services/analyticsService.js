@@ -53,3 +53,54 @@ export const getAgeAnalytics = async () => {
     return response.data;
 
 };
+
+export const getEmployeeWellbeing = async () => {
+
+    const response = await api.get("/employee-wellbeing");
+
+    return response.data;
+
+};
+
+
+export const getExperienceSummary = async () => {
+
+    const response = await api.get("/experience-summary");
+
+    return response.data;
+
+};
+
+
+export const getJobSatisfaction = async () => {
+
+    const response = await api.get("/job-satisfaction");
+
+    return response.data;
+
+};
+
+
+export const getWorkLifeBalance = async () => {
+
+    const response = await api.get("/work-life-balance");
+
+    return response.data;
+
+};
+
+export const getAttritionByDepartment = async () => {
+
+    const response = await api.get("/attrition-by-department");
+
+    return response.data;
+
+};
+
+export const getSalaryDistribution = async () => {
+
+    const response = await api.get("/salary-distribution");
+
+    return response.data;
+
+};
