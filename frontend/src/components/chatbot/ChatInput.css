@@ -1,0 +1,29 @@
+.chat-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.chat-input-container textarea {
+    resize: none;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+
+.chat-input-container button {
+    width: 120px;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1976d2;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat-input-container button:hover {
+    background-color: #1259a7;
+}
