@@ -145,44 +145,53 @@ def test_ai_key():
     "/employees",
     tags=["Employees"],
     summary="Get all employees",
-    description="Returns a paginated list of employees with optional search."
+    description="Returns paginated employees with search and filters."
 )
 def get_employees(
-    page: int = Query(1, ge=1, description="Page number"),
-    limit: int = Query(20, ge=1, le=100, description="Number of employees per page"),
-    search: str | None = Query(
-        None,
-        description="Search by Employee ID, Department, Job Role, Gender or Attrition"
-    )
+    page: int = Query(1, ge=1),
+    limit: int = Query(20, ge=1, le=100),
+
+    search: str = Query("", description="Search by Employee ID"),
+
+    department: str = Query("", description="Department"),
+
+    jobRole: str = Query("", description="Job Role"),
+
+    attrition: str = Query("", description="Attrition"),
 ):
 
-    # Default MongoDB query
-    query = {}
-
-    # Apply search filter if provided
-    if search:
-        query = {
-            "$or": [
-                {"EmpID": {"$regex": search, "$options": "i"}},
-                {"Department": {"$regex": search, "$options": "i"}},
-                {"JobRole": {"$regex": search, "$options": "i"}},
-                {"Gender": {"$regex": search, "$options": "i"}},
-                {"Attrition": {"$regex": search, "$options": "i"}}
-            ]
-        }
-
-    # Calculate how many records should be skipped
     skip = (page - 1) * limit
 
-    # Count matching employees
-    total_employees = employees_collection.count_documents(query)
+    filters = {}
 
-    # Calculate total number of pages
-    total_pages = math.ceil(total_employees / limit) if total_employees else 1
+    # Search Employee ID
+    if search:
+        filters["EmpID"] = {
+            "$regex": search,
+            "$options": "i"
+        }
 
-    # Fetch matching employees excluding MongoDB's internal _id field
+    # Department Filter
+    if department:
+        filters["Department"] = department
+
+    # Job Role Filter
+    if jobRole:
+        filters["JobRole"] = jobRole
+
+    # Attrition Filter
+    if attrition:
+        filters["Attrition"] = attrition
+
+    total_employees = employees_collection.count_documents(filters)
+
+    total_pages = math.ceil(total_employees / limit)
+
     employees = list(
-        employees_collection.find(query, {"_id": 0})
+        employees_collection.find(
+            filters,
+            {"_id": 0}
+        )
         .skip(skip)
         .limit(limit)
     )
@@ -192,7 +201,7 @@ def get_employees(
         "limit": limit,
         "total_employees": total_employees,
         "total_pages": total_pages,
-        "employees": employees
+        "employees": employees,
     }
 
 @router.get(
@@ -388,7 +397,6 @@ def salary_analytics():
 def age_analytics():
     return get_age_analytics_data()
 
-
 @router.get(
     "/employee-wellbeing",
     tags=["Analytics"],
@@ -456,4 +464,5 @@ def salary_distribution():
     description="Returns employees grouped into predefined age categories."
 )
 def age_distribution():
+
     return get_age_distribution_data()
