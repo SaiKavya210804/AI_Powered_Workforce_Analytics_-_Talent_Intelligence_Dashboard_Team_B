@@ -1,0 +1,12 @@
+.smart-alerts-container{
+    padding:30px;
+}
+
+.smart-alerts-container h1{
+    margin-bottom:10px;
+}
+
+.smart-alerts-container p{
+    color:#666;
+    margin-bottom:30px;
+}

@@ -5,6 +5,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 
@@ -35,7 +36,12 @@ function Sidebar() {
         name:"Reports",
         path:"/reports",
         icon:<AssessmentIcon />
-    },
+        },
+        {
+        name: "Smart Alerts",
+        path: "/smart-alerts",
+        icon: <NotificationsActiveIcon />
+        },
         {
             name:"Settings",
             path:"/settings",

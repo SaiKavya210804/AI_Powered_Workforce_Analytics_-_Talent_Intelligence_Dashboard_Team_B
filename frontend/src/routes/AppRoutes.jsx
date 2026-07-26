@@ -8,6 +8,7 @@ import Employees from "../pages/Employees/Employees";
 import Analytics from "../pages/Analytics/Analytics";
 import AIAssistant from "../pages/AIAssistant/AIAssistant";
 import Reports from "../pages/Reports/Reports";
+import SmartAlerts from "../pages/SmartAlerts/SmartAlerts";
 import Settings from "../pages/Settings/Settings";
 
 
@@ -37,9 +38,10 @@ function AppRoutes() {
                     path="reports"
                     element={<Reports />}
                 />
-            
-
-
+                <Route
+                    path="smart-alerts"
+                    element={<SmartAlerts />}
+                />        
                 <Route 
                     path="settings" 
                     element={<Settings />} 
