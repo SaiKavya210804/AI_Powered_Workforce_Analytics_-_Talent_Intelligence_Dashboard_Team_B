@@ -19,7 +19,6 @@ function DepartmentChart({ data }) {
     ];
 
 
-
     return (
 
         <div className="chart-card">
@@ -31,20 +30,41 @@ function DepartmentChart({ data }) {
 
 
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer 
+                width="100%" 
+                height={320}
+            >
 
 
-                <BarChart data={data}>
+                <BarChart 
+                    data={data}
+                    margin={{
+                        top:20,
+                        right:20,
+                        left:10,
+                        bottom:40
+                    }}
+                >
+
 
 
                     <XAxis
 
                         dataKey="department"
 
+                        tick={{
+                            fontSize:12
+                        }}
+
+                        angle={-15}
+
+                        textAnchor="end"
+
                     />
 
 
                     <YAxis />
+
 
 
                     <Tooltip />
@@ -55,16 +75,24 @@ function DepartmentChart({ data }) {
 
                         dataKey="employee_count"
 
+                        radius={[8,8,0,0]}
+
+                        animationDuration={800}
+
                     >
 
+
                         {
-                            data.map((entry, index) => (
+                            data.map(
+                                (entry,index)=>(
 
                                 <Cell
 
                                     key={`cell-${index}`}
 
-                                    fill={COLORS[index % COLORS.length]}
+                                    fill={
+                                        COLORS[index % COLORS.length]
+                                    }
 
                                 />
 

@@ -4,32 +4,63 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    ResponsiveContainer
+    ResponsiveContainer,
+    Cell,
+    LabelList
 } from "recharts";
 
 
 function SatisfactionChart({ data }) {
 
 
+    const COLORS = [
+
+        "#99f6e4",
+        "#5eead4",
+        "#14b8a6",
+        "#0f766e"
+
+    ];
+
+
+
     return (
 
-        <div>
+        <div className="chart-card">
+
 
             <h2>
-                Job Satisfaction
+                Job Satisfaction Distribution
             </h2>
+
 
 
             <ResponsiveContainer
 
                 width="100%"
 
-                height={300}
+                height={320}
 
             >
 
 
-                <BarChart data={data}>
+                <BarChart
+
+                    data={data}
+
+                    margin={{
+
+                        top:20,
+
+                        right:30,
+
+                        left:20,
+
+                        bottom:20
+
+                    }}
+
+                >
 
 
                     <XAxis
@@ -37,9 +68,13 @@ function SatisfactionChart({ data }) {
                         dataKey="job_satisfaction"
 
                         label={{
-                            value: "Satisfaction Level",
-                            position: "insideBottom",
-                            offset: -5
+
+                            value:"Satisfaction Level",
+
+                            position:"insideBottom",
+
+                            offset:-5
+
                         }}
 
                     />
@@ -51,11 +86,48 @@ function SatisfactionChart({ data }) {
                     <Tooltip />
 
 
+
                     <Bar
 
                         dataKey="employees"
 
-                    />
+                        radius={[8,8,0,0]}
+
+                    >
+
+
+                        <LabelList
+
+                            dataKey="employees"
+
+                            position="top"
+
+                        />
+
+
+
+                        {
+                            data.map(
+
+                                (entry,index)=>(
+
+                                    <Cell
+
+                                        key={index}
+
+                                        fill={
+                                            COLORS[index % COLORS.length]
+                                        }
+
+                                    />
+
+                                )
+
+                            )
+                        }
+
+
+                    </Bar>
 
 
                 </BarChart>

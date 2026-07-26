@@ -8,7 +8,6 @@ import {
 } from "recharts";
 
 
-
 function AttritionChart({ data }) {
 
 
@@ -49,8 +48,8 @@ function AttritionChart({ data }) {
 
 
 
-            <ResponsiveContainer 
-                width="100%" 
+            <ResponsiveContainer
+                width="100%"
                 height={300}
             >
 
@@ -70,11 +69,14 @@ function AttritionChart({ data }) {
 
                         cy="50%"
 
+                        innerRadius={70}
+
                         outerRadius={110}
 
-                        label
+                        paddingAngle={5}
 
                     >
+
 
                         {
                             chartData.map((entry,index)=>(
@@ -105,6 +107,24 @@ function AttritionChart({ data }) {
 
 
             </ResponsiveContainer>
+
+
+
+            <div className="chart-summary">
+
+
+                <span>
+                    Attrition Rate
+                </span>
+
+
+                <strong>
+                    {data.attrition_rate}
+                </strong>
+
+
+            </div>
+
 
 
         </div>

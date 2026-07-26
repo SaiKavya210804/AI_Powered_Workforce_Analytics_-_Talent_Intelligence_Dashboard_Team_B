@@ -4,58 +4,64 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    ResponsiveContainer
+    ResponsiveContainer,
+    Cell,
+    LabelList
 } from "recharts";
 
 
 function AgeChart({ data }) {
 
 
-    const chartData = [
-
-        {
-            name: "Average Age",
-            age: data.average_age
-        },
-
-        {
-            name: "Youngest Employee",
-            age: data.youngest_employee
-        },
-
-        {
-            name: "Oldest Employee",
-            age: data.oldest_employee
-        }
-
+    const COLORS = [
+        "#bfdbfe",
+        "#93c5fd",
+        "#60a5fa",
+        "#3b82f6",
+        "#1d4ed8"
     ];
 
 
 
     return (
 
-        <div>
+        <div className="chart-card">
+
 
             <h2>
-                Age Analysis
+                Age Distribution
             </h2>
+
 
 
             <ResponsiveContainer
 
                 width="100%"
 
-                height={300}
+                height={350}
 
             >
 
 
-                <BarChart data={chartData}>
+                <BarChart
+
+                    data={data}
+
+                    margin={{
+                        top:30,
+                        right:30,
+                        left:20,
+                        bottom:20
+                    }}
+
+                >
 
 
                     <XAxis
 
-                        dataKey="name"
+                        dataKey="age_group"
+
+                        interval={0}
 
                     />
 
@@ -63,14 +69,60 @@ function AgeChart({ data }) {
                     <YAxis />
 
 
-                    <Tooltip />
+                    <Tooltip
+
+                        cursor={{
+                            fill:"rgba(37,99,235,0.08)"
+                        }}
+
+                    />
+
 
 
                     <Bar
 
-                        dataKey="age"
+                        dataKey="employees"
 
-                    />
+                        radius={[
+                            8,
+                            8,
+                            0,
+                            0
+                        ]}
+
+                    >
+
+
+                        <LabelList
+
+                            dataKey="employees"
+
+                            position="top"
+
+                        />
+
+
+
+                        {
+                            data.map(
+                                (entry,index)=>(
+
+                                    <Cell
+
+                                        key={index}
+
+                                        fill={
+                                            COLORS[index % COLORS.length]
+                                        }
+
+                                    />
+
+                                )
+                            )
+                        }
+
+
+                    </Bar>
 
 
                 </BarChart>

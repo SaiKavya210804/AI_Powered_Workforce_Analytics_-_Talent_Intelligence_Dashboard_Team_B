@@ -4,7 +4,9 @@ import {
     XAxis,
     YAxis,
     Tooltip,
-    ResponsiveContainer
+    ResponsiveContainer,
+    Cell,
+    LabelList
 } from "recharts";
 
 
@@ -37,9 +39,20 @@ function WellbeingChart({ data }) {
 
 
 
+    const COLORS = [
+
+        "#bbf7d0",
+        "#4ade80",
+        "#22c55e",
+        "#15803d"
+
+    ];
+
+
+
     return (
 
-        <div>
+        <div className="chart-card">
 
 
             <h2>
@@ -48,30 +61,60 @@ function WellbeingChart({ data }) {
 
 
 
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer
+
+                width="100%"
+
+                height={320}
+
+            >
 
 
-                <BarChart data={chartData}>
+                <BarChart
+
+                    data={chartData}
+
+                    layout="vertical"
+
+                    margin={{
+
+                        top:20,
+
+                        right:50,
+
+                        left:50,
+
+                        bottom:20
+
+                    }}
+
+                >
 
 
                     <XAxis
 
-                        dataKey="category"
-
-                        angle={-20}
-
-                        textAnchor="end"
-
-                        height={80}
-
-                    />
-
-
-                    <YAxis
+                        type="number"
 
                         domain={[0,5]}
 
                     />
+
+
+
+                    <YAxis
+
+                        type="category"
+
+                        dataKey="category"
+
+                        width={130}
+
+                        tick={{
+                            fontSize:12
+                        }}
+
+                    />
+
 
 
                     <Tooltip />
@@ -82,7 +125,48 @@ function WellbeingChart({ data }) {
 
                         dataKey="value"
 
-                    />
+                        radius={[0,8,8,0]}
+
+                    >
+
+
+                        <LabelList
+
+                            dataKey="value"
+
+                            position="right"
+
+                            formatter={
+                                (value)=>
+                                value.toFixed(2)
+                            }
+
+                        />
+
+
+
+                        {
+                            chartData.map(
+
+                                (entry,index)=>(
+
+                                    <Cell
+
+                                        key={index}
+
+                                        fill={
+                                            COLORS[index % COLORS.length]
+                                        }
+
+                                    />
+
+                                )
+
+                            )
+                        }
+
+
+                    </Bar>
 
 
                 </BarChart>

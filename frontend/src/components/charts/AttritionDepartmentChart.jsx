@@ -20,7 +20,7 @@ function AttritionDepartmentChart({ data }) {
         );
 
 
-        if(existing){
+        if (existing) {
 
             existing[item.attrition] = item.employee_count;
 
@@ -30,9 +30,9 @@ function AttritionDepartmentChart({ data }) {
 
             acc.push({
 
-                department:item.department,
+                department: item.department,
 
-                [item.attrition]:item.employee_count
+                [item.attrition]: item.employee_count
 
             });
 
@@ -46,9 +46,10 @@ function AttritionDepartmentChart({ data }) {
 
 
 
+
     return (
 
-        <div>
+        <div className="chart-card">
 
 
             <h2>
@@ -57,24 +58,64 @@ function AttritionDepartmentChart({ data }) {
 
 
 
-            <ResponsiveContainer width="100%" height={300}>
+
+            <ResponsiveContainer
+
+                width="100%"
+
+                height={350}
+
+            >
 
 
-                <BarChart data={formattedData}>
+                <BarChart
+
+                    data={formattedData}
+
+                    layout="vertical"
+
+                    margin={{
+
+                        top:20,
+
+                        right:40,
+
+                        left:100,
+
+                        bottom:20
+
+                    }}
+
+                >
 
 
-                    <XAxis 
-                        dataKey="department"
+
+                    <XAxis
+
+                        type="number"
+
                     />
 
 
-                    <YAxis />
+
+                    <YAxis
+
+                        type="category"
+
+                        dataKey="department"
+
+                        width={90}
+
+                    />
+
 
 
                     <Tooltip />
 
 
+
                     <Legend />
+
 
 
 
@@ -82,7 +123,11 @@ function AttritionDepartmentChart({ data }) {
 
                         dataKey="Yes"
 
-                        stackId="a"
+                        name="Attrition"
+
+                        fill="#ef4444"
+
+                        radius={[0,8,8,0]}
 
                     />
 
@@ -92,7 +137,11 @@ function AttritionDepartmentChart({ data }) {
 
                         dataKey="No"
 
-                        stackId="a"
+                        name="Active Employees"
+
+                        fill="#94a3b8"
+
+                        radius={[0,8,8,0]}
 
                     />
 

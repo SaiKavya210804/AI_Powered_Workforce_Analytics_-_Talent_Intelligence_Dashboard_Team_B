@@ -104,3 +104,12 @@ export const getSalaryDistribution = async () => {
     return response.data;
 
 };
+
+export const getAgeDistribution = async () => {
+
+    const response = await api.get("/age-distribution");
+
+    return response.data;
+
+};
+

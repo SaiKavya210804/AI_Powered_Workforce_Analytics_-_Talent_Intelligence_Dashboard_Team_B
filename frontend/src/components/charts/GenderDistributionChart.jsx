@@ -8,7 +8,6 @@ import {
 } from "recharts";
 
 
-
 function GenderDistributionChart({ data }) {
 
 
@@ -16,6 +15,12 @@ function GenderDistributionChart({ data }) {
         "#2563eb",
         "#ec4899"
     ];
+
+
+    const totalEmployees = data.reduce(
+        (sum, item) => sum + item.employee_count,
+        0
+    );
 
 
 
@@ -30,8 +35,8 @@ function GenderDistributionChart({ data }) {
 
 
 
-            <ResponsiveContainer 
-                width="100%" 
+            <ResponsiveContainer
+                width="100%"
                 height={300}
             >
 
@@ -51,20 +56,23 @@ function GenderDistributionChart({ data }) {
 
                         cy="50%"
 
+                        innerRadius={70}
+
                         outerRadius={110}
 
-                        label
+                        paddingAngle={5}
 
                     >
 
+
                         {
-                            data.map((entry, index) => (
+                            data.map((entry,index)=>(
 
                                 <Cell
 
                                     key={`cell-${index}`}
 
-                                    fill={COLORS[index]}
+                                    fill={COLORS[index % COLORS.length]}
 
                                 />
 
@@ -86,6 +94,24 @@ function GenderDistributionChart({ data }) {
 
 
             </ResponsiveContainer>
+
+
+
+            <div className="chart-summary">
+
+
+                <span>
+                    Total Employees
+                </span>
+
+
+                <strong>
+                    {totalEmployees}
+                </strong>
+
+
+            </div>
+
 
 
         </div>
