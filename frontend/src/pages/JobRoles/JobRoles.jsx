@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { getDepartments } from "../../services/departmentService";
+import { getJobRoles } from "../../services/jobRoleService";
 
 import PageHeader from "../../components/layout/PageHeader";
 import SearchBar from "../../components/common/SearchBar";
@@ -8,44 +8,43 @@ import RefreshButton from "../../components/common/RefreshButton";
 import Loader from "../../components/common/Loader";
 import ErrorMessage from "../../components/common/ErrorMessage";
 
-import DepartmentStats from "../../components/cards/DepartmentStats";
-import DepartmentCard from "../../components/cards/DepartmentCard";
-import DepartmentTable from "../../components/tables/DepartmentTable";
-import DepartmentPieChart from "../../components/charts/DepartmentPieChart";
+import JobRoleCard from "../../components/cards/JobRoleCard";
+import JobRoleTable from "../../components/tables/JobRoleTable";
+import JobRolePieChart from "../../components/charts/JobRolePieChart";
 
 import { Box, Stack } from "@mui/material";
 
-function Departments() {
-  const [departments, setDepartments] = useState([]);
-  const [filteredDepartments, setFilteredDepartments] = useState([]);
+function JobRoles() {
+  const [jobRoles, setJobRoles] = useState([]);
+  const [filteredJobRoles, setFilteredJobRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
-    loadDepartments();
+    loadJobRoles();
   }, []);
 
   useEffect(() => {
-    const filtered = departments.filter((dept) =>
-      dept.department.toLowerCase().includes(search.toLowerCase())
+    const filtered = jobRoles.filter((role) =>
+      role.job_role.toLowerCase().includes(search.toLowerCase())
     );
 
-    setFilteredDepartments(filtered);
-  }, [search, departments]);
+    setFilteredJobRoles(filtered);
+  }, [search, jobRoles]);
 
-  const loadDepartments = async () => {
+  const loadJobRoles = async () => {
     try {
       setLoading(true);
 
-      const data = await getDepartments();
+      const data = await getJobRoles();
 
-      setDepartments(data);
-      setFilteredDepartments(data);
+      setJobRoles(data);
+      setFilteredJobRoles(data);
       setError("");
     } catch (err) {
       console.error(err);
-      setError("Unable to load departments.");
+      setError("Unable to load job roles.");
     } finally {
       setLoading(false);
     }
@@ -54,11 +53,9 @@ function Departments() {
   return (
     <div className="page-container">
       <PageHeader
-        title="Departments"
-        subtitle="Manage and monitor all departments across the organization."
+        title="Job Roles"
+        subtitle="View employee distribution across job roles."
       />
-
-      {/* Search + Refresh */}
 
       <Stack
         direction={{ xs: "column", md: "row" }}
@@ -69,11 +66,11 @@ function Departments() {
           <SearchBar
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search Department..."
+            placeholder="Search Job Role..."
           />
         </Box>
 
-        <RefreshButton onClick={loadDepartments} />
+        <RefreshButton onClick={loadJobRoles} />
       </Stack>
 
       {loading ? (
@@ -81,12 +78,6 @@ function Departments() {
       ) : (
         <>
           {error && <ErrorMessage message={error} />}
-
-          {/* Summary Cards */}
-
-          <DepartmentStats departments={filteredDepartments} />
-
-          {/* Department Cards */}
 
           <Box
             sx={{
@@ -100,15 +91,13 @@ function Departments() {
               mb: 4,
             }}
           >
-            {filteredDepartments.map((dept) => (
-              <DepartmentCard
-                key={dept.department}
-                department={dept}
+            {filteredJobRoles.map((role) => (
+              <JobRoleCard
+                key={role.job_role}
+                role={role}
               />
             ))}
           </Box>
-
-          {/* Charts */}
 
           <Box
             sx={{
@@ -118,15 +107,14 @@ function Departments() {
                 lg: "1fr 1fr",
               },
               gap: 3,
-              mb: 4,
             }}
           >
-            <DepartmentPieChart
-              departments={filteredDepartments}
+            <JobRolePieChart
+              jobRoles={filteredJobRoles}
             />
 
-            <DepartmentTable
-              departments={filteredDepartments}
+            <JobRoleTable
+              jobRoles={filteredJobRoles}
             />
           </Box>
         </>
@@ -135,4 +123,4 @@ function Departments() {
   );
 }
 
-export default Departments;
+export default JobRoles;

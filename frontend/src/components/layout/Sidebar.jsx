@@ -6,6 +6,7 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
 import SettingsIcon from "@mui/icons-material/Settings";
+import WorkIcon from "@mui/icons-material/Work";
 
 function Sidebar() {
   const menuItems = [
@@ -24,6 +25,11 @@ function Sidebar() {
       path: "/departments",
       icon: <ApartmentIcon />,
     },
+    {
+    name: "Job Roles",
+    path: "/job-roles",
+    icon: <WorkIcon />
+},
     {
       name: "Analytics",
       path: "/analytics",

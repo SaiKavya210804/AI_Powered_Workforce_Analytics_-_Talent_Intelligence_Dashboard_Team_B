@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { getEmployees } from "../../services/employeeService";
+import {
+  getEmployees,
+  createEmployee,
+} from "../../services/employeeService";
 
 import EmployeeTable from "../../components/tables/EmployeeTable";
 
@@ -8,6 +11,7 @@ import SearchBar from "../../components/common/SearchBar";
 import RefreshButton from "../../components/common/RefreshButton";
 import Loader from "../../components/common/Loader";
 import ErrorMessage from "../../components/common/ErrorMessage";
+import EmployeeForm from "../../components/forms/EmployeeForm";
 
 import { Box, Stack } from "@mui/material";
 
@@ -20,6 +24,9 @@ function Employees() {
 
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
+
+  // Add Employee Dialog
+  const [openForm, setOpenForm] = useState(false);
 
   useEffect(() => {
     loadEmployees(page);
@@ -47,6 +54,22 @@ function Employees() {
     loadEmployees(page);
   };
 
+  // Create Employee
+  const handleCreateEmployee = async (employee) => {
+    try {
+      await createEmployee(employee);
+
+      alert("Employee added successfully!");
+
+      setOpenForm(false);
+
+      loadEmployees(page);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to create employee.");
+    }
+  };
+
   const filteredEmployees = employees.filter((emp) => {
     const value = search.toLowerCase();
 
@@ -66,7 +89,7 @@ function Employees() {
         subtitle="Manage employees, search records and navigate through workforce data."
       />
 
-      {/* Search + Refresh */}
+      {/* Search + Refresh + Add */}
 
       <Stack
         direction={{ xs: "column", md: "row" }}
@@ -80,7 +103,28 @@ function Employees() {
           />
         </Box>
 
-        <RefreshButton onClick={handleRefresh} />
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+          }}
+        >
+          <RefreshButton onClick={handleRefresh} />
+
+          <button
+            onClick={() => setOpenForm(true)}
+            style={{
+              padding: "10px 18px",
+              background: "#2563eb",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+            }}
+          >
+            Add Employee
+          </button>
+        </div>
       </Stack>
 
       {loading ? (
@@ -134,6 +178,14 @@ function Employees() {
           </div>
         </>
       )}
+
+      {/* Employee Form Popup */}
+
+      <EmployeeForm
+        open={openForm}
+        onClose={() => setOpenForm(false)}
+        onSubmit={handleCreateEmployee}
+      />
     </div>
   );
 }

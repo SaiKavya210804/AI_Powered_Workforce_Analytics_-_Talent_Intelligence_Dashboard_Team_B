@@ -8,7 +8,7 @@ import Departments from "../pages/Departments/Departments";
 import Analytics from "../pages/Analytics/Analytics";
 import AIAssistant from "../pages/AIAssistant/AIAssistant";
 import Settings from "../pages/Settings/Settings";
-
+import JobRoles from "../pages/JobRoles/JobRoles";
 
 function AppRoutes() {
     return (
@@ -27,7 +27,10 @@ function AppRoutes() {
                     element={<Departments />}
                 />
 
-                
+                <Route
+    path="job-roles"
+    element={<JobRoles />}
+/>
 
                 <Route 
                     path="analytics" 
