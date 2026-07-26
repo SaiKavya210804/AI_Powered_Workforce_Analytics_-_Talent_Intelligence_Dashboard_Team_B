@@ -141,9 +141,6 @@ def test_ai_key():
 # EMPLOYEE ENDPOINTS
 # ==========================================================
 
-from fastapi import Query
-import math
-
 @router.get(
     "/employees",
     tags=["Employees"],
@@ -167,20 +164,39 @@ def get_employees(
 
     filters = {}
 
-    # Search Employee ID
+    # Search
     if search:
-        filters["EmpID"] = {
-            "$regex": search,
-            "$options": "i"
-        }
+        filters["$or"] = [
+            {
+                "EmpID": {
+                    "$regex": search,
+                    "$options": "i"
+                }
+            },
+            {
+                "Department": {
+                    "$regex": search,
+                    "$options": "i"
+                }
+            },
+            {
+                "JobRole": {
+                    "$regex": search,
+                    "$options": "i"
+                }
+            }
+        ]
+
 
     # Department Filter
     if department:
         filters["Department"] = department
 
+
     # Job Role Filter
     if jobRole:
         filters["JobRole"] = jobRole
+
 
     # Attrition Filter
     if attrition:
