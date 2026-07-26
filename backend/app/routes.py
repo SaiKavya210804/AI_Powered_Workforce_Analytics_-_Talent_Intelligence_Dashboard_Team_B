@@ -205,7 +205,7 @@ def get_employees(
     total_employees = employees_collection.count_documents(filters)
 
     total_pages = math.ceil(total_employees / limit)
-
+    
     employees = list(
         employees_collection.find(
             filters,
