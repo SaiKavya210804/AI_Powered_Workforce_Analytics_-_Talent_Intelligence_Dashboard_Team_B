@@ -7,13 +7,19 @@ import api from "./api";
 export const getEmployees = async (
   page = 1,
   limit = 20,
-  search = ""
+  search = "",
+  department = "",
+  jobRole = "",
+  attrition = ""
 ) => {
   const response = await api.get("/employees", {
     params: {
       page,
       limit,
       search,
+      department,
+      jobRole,
+      attrition,
     },
   });
 

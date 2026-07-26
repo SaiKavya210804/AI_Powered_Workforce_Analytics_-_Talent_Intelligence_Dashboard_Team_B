@@ -54,37 +54,67 @@ const [attrition, setAttrition] = useState("");
 
   useEffect(() => {
   loadEmployees(page);
-}, [page, search, department, jobRole, attrition]);
+}, [
+  page,
+  search,
+  department,
+  jobRole,
+  attrition
+]);
 
-  useEffect(() => {
-    setPage(1);
-  }, [search]);
 
-  const loadEmployees = async (currentPage) => {
-    try {
-      setLoading(true);
+useEffect(() => {
+  setPage(1);
+}, [
+  search,
+  department,
+  jobRole,
+  attrition
+]);
 
-      const data = await getEmployees(currentPage, 20, search, department, jobRole, attrition);
+  const loadEmployees = async (currentPage = 1) => {
+  try {
+    setLoading(true);
 
-      setEmployees(data.employees);
-      setTotalPages(data.total_pages);
-      setTotalEmployees(data.total_employees);
-      setError("");
-    } catch (err) {
-      console.error(err);
-      setError("Unable to load employees.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    console.log("Sending Filters:", {
+      search,
+      department,
+      jobRole,
+      attrition
+    });
 
-  const handleRefresh = () => {
+    const data = await getEmployees(
+      currentPage,
+      20,
+      search,
+      department,
+      jobRole,
+      attrition
+    );
+
+    setEmployees(data.employees);
+    setTotalPages(data.total_pages);
+    setTotalEmployees(data.total_employees);
+    setError("");
+
+  } catch (err) {
+    console.error(err);
+    setError("Unable to load employees.");
+
+  } finally {
+    setLoading(false);
+  }
+};
+
+ const handleRefresh = () => {
+
   setSearch("");
   setDepartment("");
   setJobRole("");
   setAttrition("");
 
-  loadEmployees(1);
+  setPage(1);
+
 };
 
   // Snackbar Helper
@@ -196,10 +226,13 @@ const [attrition, setAttrition] = useState("");
     <InputLabel>Department</InputLabel>
 
     <Select
-      value={department}
-      label="Department"
-      onChange={(e) => setDepartment(e.target.value)}
-    >
+  value={department}
+  label="Department"
+  onChange={(e) => {
+    console.log("Department Selected:", e.target.value);
+    setDepartment(e.target.value);
+  }}
+>
       <MenuItem value="">All</MenuItem>
       <MenuItem value="Research & Development">
         Research & Development
@@ -216,10 +249,13 @@ const [attrition, setAttrition] = useState("");
     <InputLabel>Job Role</InputLabel>
 
     <Select
-      value={jobRole}
-      label="Job Role"
-      onChange={(e) => setJobRole(e.target.value)}
-    >
+  value={jobRole}
+  label="Job Role"
+  onChange={(e) => {
+    console.log("Job Role Selected:", e.target.value);
+    setJobRole(e.target.value);
+  }}
+>
       <MenuItem value="">All</MenuItem>
       <MenuItem value="Manager">Manager</MenuItem>
       <MenuItem value="Sales Executive">
@@ -248,10 +284,13 @@ const [attrition, setAttrition] = useState("");
     <InputLabel>Attrition</InputLabel>
 
     <Select
-      value={attrition}
-      label="Attrition"
-      onChange={(e) => setAttrition(e.target.value)}
-    >
+  value={attrition}
+  label="Attrition"
+  onChange={(e) => {
+    console.log("Attrition Selected:", e.target.value);
+    setAttrition(e.target.value);
+  }}
+>
       <MenuItem value="">All</MenuItem>
       <MenuItem value="Yes">Yes</MenuItem>
       <MenuItem value="No">No</MenuItem>
