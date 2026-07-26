@@ -145,25 +145,44 @@ def test_ai_key():
     "/employees",
     tags=["Employees"],
     summary="Get all employees",
-    description="Returns a paginated list of employees."
+    description="Returns a paginated list of employees with optional search."
 )
 def get_employees(
     page: int = Query(1, ge=1, description="Page number"),
-    limit: int = Query(20, ge=1, le=100, description="Number of employees per page")
+    limit: int = Query(20, ge=1, le=100, description="Number of employees per page"),
+    search: str | None = Query(
+        None,
+        description="Search by Employee ID, Department, Job Role, Gender or Attrition"
+    )
 ):
+
+    # Default MongoDB query
+    query = {}
+
+    # Apply search filter if provided
+    if search:
+        query = {
+            "$or": [
+                {"EmpID": {"$regex": search, "$options": "i"}},
+                {"Department": {"$regex": search, "$options": "i"}},
+                {"JobRole": {"$regex": search, "$options": "i"}},
+                {"Gender": {"$regex": search, "$options": "i"}},
+                {"Attrition": {"$regex": search, "$options": "i"}}
+            ]
+        }
 
     # Calculate how many records should be skipped
     skip = (page - 1) * limit
 
-    # Count the total number of employees
-    total_employees = employees_collection.count_documents({})
+    # Count matching employees
+    total_employees = employees_collection.count_documents(query)
 
     # Calculate total number of pages
-    total_pages = math.ceil(total_employees / limit)
+    total_pages = math.ceil(total_employees / limit) if total_employees else 1
 
-    # Fetch employees excluding MongoDB's internal _id field
+    # Fetch matching employees excluding MongoDB's internal _id field
     employees = list(
-        employees_collection.find({}, {"_id": 0})
+        employees_collection.find(query, {"_id": 0})
         .skip(skip)
         .limit(limit)
     )
@@ -175,7 +194,6 @@ def get_employees(
         "total_pages": total_pages,
         "employees": employees
     }
-
 
 @router.get(
     "/employee/{emp_id}",
