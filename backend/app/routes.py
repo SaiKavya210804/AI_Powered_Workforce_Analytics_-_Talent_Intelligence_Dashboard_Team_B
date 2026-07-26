@@ -202,6 +202,14 @@ def get_employees(
     if attrition:
         filters["Attrition"] = attrition
 
+    print("=" * 50)
+    print("Filters received:")
+    print("search =", search)
+    print("department =", department)
+    print("jobRole =", jobRole)
+    print("attrition =", attrition)
+    print("=" * 50)
+
     total_employees = employees_collection.count_documents(filters)
 
     total_pages = math.ceil(total_employees / limit)
