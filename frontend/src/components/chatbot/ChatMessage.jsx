@@ -1,9 +1,10 @@
 import "./ChatMessage.css";
+import ReactMarkdown from "react-markdown";
 
 function ChatMessage({ message, sender }) {
   return (
     <div className={`message ${sender}`}>
-      <p>{message}</p>
+      <ReactMarkdown>{message}</ReactMarkdown>
     </div>
   );
 }
