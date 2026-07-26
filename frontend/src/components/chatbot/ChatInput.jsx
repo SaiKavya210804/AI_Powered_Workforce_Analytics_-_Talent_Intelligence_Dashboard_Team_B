@@ -1,10 +1,8 @@
 import "./ChatInput.css";
 
 function ChatInput({ value, onChange, onSend }) {
-
   return (
     <div className="chat-input-container">
-
       <textarea
         rows="3"
         placeholder="Ask something about your workforce..."
@@ -15,7 +13,6 @@ function ChatInput({ value, onChange, onSend }) {
       <button onClick={onSend}>
         Send
       </button>
-
     </div>
   );
 }
