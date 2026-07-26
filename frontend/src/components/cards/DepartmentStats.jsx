@@ -2,9 +2,9 @@ function DepartmentStats({ departments }) {
   const totalDepartments = departments.length;
 
   const totalEmployees = departments.reduce(
-    (sum, dept) => sum + dept.employee_count,
-    0
-  );
+  (sum, dept) => sum + dept.employee_count,
+  0
+);
 
   const largestDepartment = departments.reduce((a, b) =>
     a.employee_count > b.employee_count ? a : b

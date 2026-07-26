@@ -51,6 +51,26 @@ function Departments() {
     }
   };
 
+  // Refresh button
+  const handleRefresh = async () => {
+    setSearch("");
+
+    try {
+      setLoading(true);
+
+      const data = await getDepartments();
+
+      setDepartments(data);
+      setFilteredDepartments(data);
+      setError("");
+    } catch (err) {
+      console.error(err);
+      setError("Unable to load departments.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="page-container">
       <PageHeader
@@ -73,7 +93,7 @@ function Departments() {
           />
         </Box>
 
-        <RefreshButton onClick={loadDepartments} />
+        <RefreshButton onClick={handleRefresh} />
       </Stack>
 
       {loading ? (

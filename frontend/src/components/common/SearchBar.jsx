@@ -1,14 +1,20 @@
 import { TextField } from "@mui/material";
 
-function SearchBar({ value, onChange }) {
+function SearchBar({
+  value,
+  onChange,
+  placeholder = "Search EmployeeID...",
+}) {
   return (
-    <TextField
-      fullWidth
-      label="Search Employee ID"
-      placeholder="Enter Employee ID..."
+    <input
+      type="text"
       value={value}
       onChange={onChange}
-      size="small"
+      placeholder={placeholder}
+      style={{
+        width: "100%",
+        padding: "10px",
+      }}
     />
   );
 }

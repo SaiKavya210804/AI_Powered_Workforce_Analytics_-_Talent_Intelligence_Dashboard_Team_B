@@ -4,7 +4,7 @@ function EmployeeForm({
   open,
   onClose,
   onSubmit,
-  initialData = null,
+  employee: initialData = null,
 }) {
   const emptyEmployee = {
     EmpID: "",
@@ -31,21 +31,25 @@ function EmployeeForm({
 
   useEffect(() => {
     if (initialData) {
-      setEmployee(initialData);
+      setEmployee({
+        ...emptyEmployee,
+        ...initialData,
+      });
     } else {
       setEmployee(emptyEmployee);
     }
   }, [initialData]);
 
   const handleChange = (e) => {
-    setEmployee({
-      ...employee,
+    setEmployee((prev) => ({
+      ...prev,
       [e.target.name]: e.target.value,
-    });
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     onSubmit(employee);
   };
 
@@ -56,7 +60,7 @@ function EmployeeForm({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0,0,0,.35)",
+        background: "rgba(0,0,0,.4)",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -66,6 +70,8 @@ function EmployeeForm({
       <div
         style={{
           width: "700px",
+          maxHeight: "90vh",
+          overflowY: "auto",
           background: "#fff",
           borderRadius: "10px",
           padding: "25px",
@@ -88,12 +94,13 @@ function EmployeeForm({
               placeholder="Employee ID"
               value={employee.EmpID}
               onChange={handleChange}
+              disabled={initialData !== null}
             />
 
             <input
+              type="number"
               name="Age"
               placeholder="Age"
-              type="number"
               value={employee.Age}
               onChange={handleChange}
             />
@@ -120,9 +127,9 @@ function EmployeeForm({
             />
 
             <input
+              type="number"
               name="Education"
               placeholder="Education"
-              type="number"
               value={employee.Education}
               onChange={handleChange}
             />
@@ -142,73 +149,73 @@ function EmployeeForm({
             />
 
             <input
+              type="number"
               name="MonthlyIncome"
               placeholder="Monthly Income"
-              type="number"
               value={employee.MonthlyIncome}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="JobLevel"
               placeholder="Job Level"
-              type="number"
               value={employee.JobLevel}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="YearsAtCompany"
               placeholder="Years At Company"
-              type="number"
               value={employee.YearsAtCompany}
               onChange={handleChange}
             />
 
             <input
-              name="TrainingTimesLastYear"
-              placeholder="Training Last Year"
               type="number"
+              name="TrainingTimesLastYear"
+              placeholder="Training Times Last Year"
               value={employee.TrainingTimesLastYear}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="EnvironmentSatisfaction"
               placeholder="Environment Satisfaction"
-              type="number"
               value={employee.EnvironmentSatisfaction}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="JobSatisfaction"
               placeholder="Job Satisfaction"
-              type="number"
               value={employee.JobSatisfaction}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="RelationshipSatisfaction"
               placeholder="Relationship Satisfaction"
-              type="number"
               value={employee.RelationshipSatisfaction}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="WorkLifeBalance"
               placeholder="Work Life Balance"
-              type="number"
               value={employee.WorkLifeBalance}
               onChange={handleChange}
             />
 
             <input
+              type="number"
               name="YearsWithCurrManager"
               placeholder="Years With Current Manager"
-              type="number"
               value={employee.YearsWithCurrManager}
               onChange={handleChange}
             />
@@ -232,12 +239,26 @@ function EmployeeForm({
             <button
               type="button"
               onClick={onClose}
+              style={{
+                padding: "10px 20px",
+                cursor: "pointer",
+              }}
             >
               Cancel
             </button>
 
-            <button type="submit">
-              {initialData ? "Update" : "Save"}
+            <button
+              type="submit"
+              style={{
+                padding: "10px 20px",
+                background: "#2563eb",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              {initialData ? "Update Employee" : "Save Employee"}
             </button>
           </div>
         </form>

@@ -50,6 +50,12 @@ function JobRoles() {
     }
   };
 
+  // Refresh button
+  const handleRefresh = () => {
+    setSearch("");
+    loadJobRoles();
+  };
+
   return (
     <div className="page-container">
       <PageHeader
@@ -70,7 +76,7 @@ function JobRoles() {
           />
         </Box>
 
-        <RefreshButton onClick={loadJobRoles} />
+        <RefreshButton onClick={handleRefresh} />
       </Stack>
 
       {loading ? (
@@ -109,13 +115,9 @@ function JobRoles() {
               gap: 3,
             }}
           >
-            <JobRolePieChart
-              jobRoles={filteredJobRoles}
-            />
+            <JobRolePieChart jobRoles={filteredJobRoles} />
 
-            <JobRoleTable
-              jobRoles={filteredJobRoles}
-            />
+            <JobRoleTable jobRoles={filteredJobRoles} />
           </Box>
         </>
       )}

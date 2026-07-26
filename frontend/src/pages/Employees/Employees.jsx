@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   getEmployees,
   createEmployee,
+  updateEmployee,
+  deleteEmployee,
 } from "../../services/employeeService";
 
 import EmployeeTable from "../../components/tables/EmployeeTable";
@@ -27,6 +29,7 @@ function Employees() {
   const [error, setError] = useState("");
 
   const [openForm, setOpenForm] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   useEffect(() => {
     loadEmployees(page);
@@ -40,11 +43,7 @@ function Employees() {
     try {
       setLoading(true);
 
-      const data = await getEmployees(
-        currentPage,
-        20,
-        search
-      );
+      const data = await getEmployees(currentPage, 20, search);
 
       setEmployees(data.employees);
       setTotalPages(data.total_pages);
@@ -63,25 +62,66 @@ function Employees() {
     loadEmployees(page);
   };
 
-  const handleCreateEmployee = async (employee) => {
-    try {
-      await createEmployee(employee);
+  // ==========================
+  // Create OR Update Employee
+  // ==========================
 
-      alert("Employee added successfully!");
+  const handleSaveEmployee = async (employee) => {
+    try {
+      if (selectedEmployee) {
+        await updateEmployee(employee.EmpID, employee);
+
+        alert("Employee updated successfully!");
+      } else {
+        await createEmployee(employee);
+
+        alert("Employee added successfully!");
+      }
 
       setOpenForm(false);
+      setSelectedEmployee(null);
 
       loadEmployees(page);
-
     } catch (err) {
       console.error(err);
-      alert("Unable to create employee.");
+      alert("Unable to save employee.");
+    }
+  };
+
+  // ==========================
+  // Edit Employee
+  // ==========================
+
+  const handleEditEmployee = (employee) => {
+    setSelectedEmployee(employee);
+    setOpenForm(true);
+  };
+
+  // ==========================
+  // Delete Employee
+  // ==========================
+
+  const handleDeleteEmployee = async (empId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this employee?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await deleteEmployee(empId);
+
+      alert("Employee deleted successfully!");
+
+      loadEmployees(page);
+    } catch (err) {
+      console.error(err);
+      alert("Unable to delete employee.");
     }
   };
 
   return (
     <div className="page-container">
-
       <PageHeader
         title="Employee Management"
         subtitle="Manage employees, search records and navigate through workforce data."
@@ -108,7 +148,10 @@ function Employees() {
           <RefreshButton onClick={handleRefresh} />
 
           <button
-            onClick={() => setOpenForm(true)}
+            onClick={() => {
+              setSelectedEmployee(null);
+              setOpenForm(true);
+            }}
             style={{
               padding: "10px 18px",
               background: "#2563eb",
@@ -120,9 +163,7 @@ function Employees() {
           >
             Add Employee
           </button>
-
         </div>
-
       </Stack>
 
       {loading ? (
@@ -131,11 +172,13 @@ function Employees() {
         <>
           {error && <ErrorMessage message={error} />}
 
-          <h3>
-            Total Matching Employees : {totalEmployees}
-          </h3>
+          <h3>Total Matching Employees : {totalEmployees}</h3>
 
-          <EmployeeTable employees={employees} />
+          <EmployeeTable
+            employees={employees}
+            onEdit={handleEditEmployee}
+            onDelete={handleDeleteEmployee}
+          />
 
           <div
             style={{
@@ -177,10 +220,13 @@ function Employees() {
 
       <EmployeeForm
         open={openForm}
-        onClose={() => setOpenForm(false)}
-        onSubmit={handleCreateEmployee}
+        employee={selectedEmployee}
+        onClose={() => {
+          setOpenForm(false);
+          setSelectedEmployee(null);
+        }}
+        onSubmit={handleSaveEmployee}
       />
-
     </div>
   );
 }

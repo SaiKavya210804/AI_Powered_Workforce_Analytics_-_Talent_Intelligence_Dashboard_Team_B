@@ -1,4 +1,8 @@
-function EmployeeTable({ employees }) {
+function EmployeeTable({
+  employees,
+  onEdit,
+  onDelete,
+}) {
   return (
     <table
       border="1"
@@ -18,6 +22,7 @@ function EmployeeTable({ employees }) {
           <th>Job Role</th>
           <th>Monthly Income</th>
           <th>Attrition</th>
+          <th>Actions</th>
         </tr>
       </thead>
 
@@ -31,6 +36,37 @@ function EmployeeTable({ employees }) {
             <td>{emp.JobRole}</td>
             <td>{emp.MonthlyIncome}</td>
             <td>{emp.Attrition}</td>
+
+            <td>
+              <button
+                onClick={() => onEdit(emp)}
+                style={{
+                  marginRight: "10px",
+                  background: "#2563eb",
+                  color: "white",
+                  border: "none",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Edit
+              </button>
+
+              <button
+                onClick={() => onDelete(emp.EmpID)}
+                style={{
+                  background: "#dc2626",
+                  color: "white",
+                  border: "none",
+                  padding: "6px 12px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                Delete
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>
