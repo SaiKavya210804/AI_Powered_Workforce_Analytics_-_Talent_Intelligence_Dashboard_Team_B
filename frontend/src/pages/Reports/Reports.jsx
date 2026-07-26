@@ -1,3 +1,4 @@
+import ReportCard from "../../components/reports/ReportCard";
 import "./Reports.css";
 
 function Reports() {
@@ -14,38 +15,25 @@ function Reports() {
 
       <div className="report-grid">
 
-        <div className="report-card">
-          <h2>Workforce Summary Report</h2>
-          <p>Generate a summary of workforce insights.</p>
+        <ReportCard
+          title="Workforce Summary Report"
+          description="Generate a summary of workforce insights."
+        />
 
-          <div className="button-group">
-            <button>Generate</button>
-            <button>PDF</button>
-            <button>CSV</button>
-          </div>
-        </div>
+        <ReportCard
+          title="Employee Report"
+          description="Export employee information."
+        />
 
-        <div className="report-card">
-          <h2>Employee Report</h2>
-          <p>Export employee information.</p>
+        <ReportCard
+          title="Analytics Report"
+          description="Download workforce analytics."
+        />
 
-          <div className="button-group">
-            <button>Generate</button>
-            <button>PDF</button>
-            <button>CSV</button>
-          </div>
-        </div>
-
-        <div className="report-card">
-          <h2>Analytics Report</h2>
-          <p>Download workforce analytics.</p>
-
-          <div className="button-group">
-            <button>Generate</button>
-            <button>PDF</button>
-            <button>CSV</button>
-          </div>
-        </div>
+        <ReportCard
+          title="Department Report"
+          description="Generate department-wise workforce reports."
+        />
 
       </div>
 

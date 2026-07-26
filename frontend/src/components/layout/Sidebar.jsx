@@ -4,6 +4,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 
@@ -30,6 +31,11 @@ function Sidebar() {
             path:"/ai-assistant",
             icon:<SmartToyIcon />
         },
+        {
+        name:"Reports",
+        path:"/reports",
+        icon:<AssessmentIcon />
+    },
         {
             name:"Settings",
             path:"/settings",

@@ -1,0 +1,19 @@
+.report-card{
+    border-radius:16px !important;
+    transition:0.3s;
+    height:100%;
+}
+
+.report-card:hover{
+    transform:translateY(-6px);
+}
+
+.report-title{
+    font-weight:600 !important;
+    margin-bottom:10px !important;
+}
+
+.report-description{
+    color:#666;
+    min-height:50px;
+}
