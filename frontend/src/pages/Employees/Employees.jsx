@@ -21,25 +21,34 @@ function Employees() {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalEmployees, setTotalEmployees] = useState(0);
 
   const [search, setSearch] = useState("");
   const [error, setError] = useState("");
 
-  // Add Employee Dialog
   const [openForm, setOpenForm] = useState(false);
 
   useEffect(() => {
     loadEmployees(page);
-  }, [page]);
+  }, [page, search]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   const loadEmployees = async (currentPage) => {
     try {
       setLoading(true);
 
-      const data = await getEmployees(currentPage, 20);
+      const data = await getEmployees(
+        currentPage,
+        20,
+        search
+      );
 
       setEmployees(data.employees);
       setTotalPages(data.total_pages);
+      setTotalEmployees(data.total_employees);
       setError("");
     } catch (err) {
       console.error(err);
@@ -54,7 +63,6 @@ function Employees() {
     loadEmployees(page);
   };
 
-  // Create Employee
   const handleCreateEmployee = async (employee) => {
     try {
       await createEmployee(employee);
@@ -64,32 +72,20 @@ function Employees() {
       setOpenForm(false);
 
       loadEmployees(page);
+
     } catch (err) {
       console.error(err);
       alert("Unable to create employee.");
     }
   };
 
-  const filteredEmployees = employees.filter((emp) => {
-    const value = search.toLowerCase();
-
-    return (
-      emp.EmpID.toLowerCase().includes(value) ||
-      emp.Department.toLowerCase().includes(value) ||
-      emp.JobRole.toLowerCase().includes(value) ||
-      emp.Gender.toLowerCase().includes(value) ||
-      emp.Attrition.toLowerCase().includes(value)
-    );
-  });
-
   return (
     <div className="page-container">
+
       <PageHeader
         title="Employee Management"
         subtitle="Manage employees, search records and navigate through workforce data."
       />
-
-      {/* Search + Refresh + Add */}
 
       <Stack
         direction={{ xs: "column", md: "row" }}
@@ -124,7 +120,9 @@ function Employees() {
           >
             Add Employee
           </button>
+
         </div>
+
       </Stack>
 
       {loading ? (
@@ -133,13 +131,11 @@ function Employees() {
         <>
           {error && <ErrorMessage message={error} />}
 
-          <h3>Total Employees Loaded : {filteredEmployees.length}</h3>
+          <h3>
+            Total Matching Employees : {totalEmployees}
+          </h3>
 
-          {/* Employee Table */}
-
-          <EmployeeTable employees={filteredEmployees} />
-
-          {/* Pagination */}
+          <EmployeeTable employees={employees} />
 
           <div
             style={{
@@ -179,13 +175,12 @@ function Employees() {
         </>
       )}
 
-      {/* Employee Form Popup */}
-
       <EmployeeForm
         open={openForm}
         onClose={() => setOpenForm(false)}
         onSubmit={handleCreateEmployee}
       />
+
     </div>
   );
 }

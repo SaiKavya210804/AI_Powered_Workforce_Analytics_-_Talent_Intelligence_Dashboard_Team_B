@@ -1,13 +1,21 @@
 import api from "./api";
 
 // ============================
-// Get Employees (Pagination)
+// Get Employees (Pagination + Search)
 // ============================
 
-export const getEmployees = async (page = 1, limit = 20) => {
-  const response = await api.get(
-    `/employees?page=${page}&limit=${limit}`
-  );
+export const getEmployees = async (
+  page = 1,
+  limit = 20,
+  search = ""
+) => {
+  const response = await api.get("/employees", {
+    params: {
+      page,
+      limit,
+      search,
+    },
+  });
 
   return response.data;
 };
@@ -26,11 +34,7 @@ export const getEmployeeById = async (empId) => {
 // ============================
 
 export const createEmployee = async (employeeData) => {
-  const response = await api.post(
-    "/employee",
-    employeeData
-  );
-
+  const response = await api.post("/employee", employeeData);
   return response.data;
 };
 
@@ -39,11 +43,7 @@ export const createEmployee = async (employeeData) => {
 // ============================
 
 export const updateEmployee = async (empId, employeeData) => {
-  const response = await api.put(
-    `/employee/${empId}`,
-    employeeData
-  );
-
+  const response = await api.put(`/employee/${empId}`, employeeData);
   return response.data;
 };
 
@@ -52,9 +52,6 @@ export const updateEmployee = async (empId, employeeData) => {
 // ============================
 
 export const deleteEmployee = async (empId) => {
-  const response = await api.delete(
-    `/employee/${empId}`
-  );
-
+  const response = await api.delete(`/employee/${empId}`);
   return response.data;
 };
