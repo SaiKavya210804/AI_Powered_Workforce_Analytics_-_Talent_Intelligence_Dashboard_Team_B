@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { askAI } from "../../services/aiService";
+import ChatInput from "../../components/chatbot/ChatInput";
 
 function AIAssistant() {
   const [question, setQuestion] = useState("");
@@ -38,7 +39,7 @@ function AIAssistant() {
       <br />
 
       <button onClick={handleAsk}>
-        Ask AI
+        
       </button>
 
       <br />

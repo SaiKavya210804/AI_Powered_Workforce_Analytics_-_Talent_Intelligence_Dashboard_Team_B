@@ -1,27 +1,21 @@
-import { useState } from "react";
+import "./ChatInput.css";
 
-function ChatInput({ onSend }) {
-  const [message, setMessage] = useState("");
-
-  const handleSend = () => {
-    if (!message.trim()) return;
-
-    onSend(message);
-    setMessage("");
-  };
+function ChatInput({ value, onChange, onSend }) {
 
   return (
     <div className="chat-input-container">
+
       <textarea
         rows="3"
         placeholder="Ask something about your workforce..."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        value={value}
+        onChange={onChange}
       />
 
-      <button onClick={handleSend}>
+      <button onClick={onSend}>
         Send
       </button>
+
     </div>
   );
 }

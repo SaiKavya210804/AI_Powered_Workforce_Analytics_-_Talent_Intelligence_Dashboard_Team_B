@@ -37,6 +37,8 @@ function AppRoutes() {
                     path="reports"
                     element={<Reports />}
                 />
+            
+
 
                 <Route 
                     path="settings" 
