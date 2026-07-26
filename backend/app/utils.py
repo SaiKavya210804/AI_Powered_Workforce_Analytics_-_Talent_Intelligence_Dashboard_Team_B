@@ -540,38 +540,72 @@ def get_age_distribution():
     Get employee age distribution.
     """
 
-    # Group employees into predefined age ranges
     pipeline = [
+
         {
             "$bucket": {
+
                 "groupBy": "$Age",
-                "boundaries": [18, 25, 35, 45, 55, 100],
+
+                "boundaries": [
+                    18,
+                    25,
+                    35,
+                    45,
+                    55,
+                    100
+                ],
+
                 "default": "Other",
+
                 "output": {
-                    "employees": {"$sum": 1}
+
+                    "employees": {
+                        "$sum": 1
+                    }
+
                 }
+
             }
+
         }
+
     ]
 
-    # Execute the aggregation pipeline
+
     result = list(
         employees_collection.aggregate(pipeline)
     )
 
-    # Convert MongoDB bucket boundaries into readable labels
+
     age_labels = {
+
         18: "18-24",
+
         25: "25-34",
+
         35: "35-44",
+
         45: "45-54",
+
         55: "55+"
+
     }
 
+
     return [
+
         {
-            "age_group": age_labels.get(item["_id"], "Other"),
+
+            "age_group": age_labels.get(
+                item["_id"],
+                "Other"
+            ),
+
             "employees": item["employees"]
+
         }
+
         for item in result
+
     ]

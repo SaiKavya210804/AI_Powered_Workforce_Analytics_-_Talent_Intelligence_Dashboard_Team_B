@@ -141,29 +141,60 @@ def test_ai_key():
 # EMPLOYEE ENDPOINTS
 # ==========================================================
 
+from fastapi import Query
+import math
+
 @router.get(
     "/employees",
     tags=["Employees"],
     summary="Get all employees",
-    description="Returns a paginated list of employees."
+    description="Returns paginated employees with search and filters."
 )
 def get_employees(
-    page: int = Query(1, ge=1, description="Page number"),
-    limit: int = Query(20, ge=1, le=100, description="Number of employees per page")
+    page: int = Query(1, ge=1),
+    limit: int = Query(20, ge=1, le=100),
+
+    search: str = Query("", description="Search by Employee ID"),
+
+    department: str = Query("", description="Department"),
+
+    jobRole: str = Query("", description="Job Role"),
+
+    attrition: str = Query("", description="Attrition"),
 ):
 
-    # Calculate how many records should be skipped
     skip = (page - 1) * limit
 
-    # Count the total number of employees
-    total_employees = employees_collection.count_documents({})
+    filters = {}
 
-    # Calculate total number of pages
+    # Search Employee ID
+    if search:
+        filters["EmpID"] = {
+            "$regex": search,
+            "$options": "i"
+        }
+
+    # Department Filter
+    if department:
+        filters["Department"] = department
+
+    # Job Role Filter
+    if jobRole:
+        filters["JobRole"] = jobRole
+
+    # Attrition Filter
+    if attrition:
+        filters["Attrition"] = attrition
+
+    total_employees = employees_collection.count_documents(filters)
+
     total_pages = math.ceil(total_employees / limit)
 
-    # Fetch employees excluding MongoDB's internal _id field
     employees = list(
-        employees_collection.find({}, {"_id": 0})
+        employees_collection.find(
+            filters,
+            {"_id": 0}
+        )
         .skip(skip)
         .limit(limit)
     )
@@ -173,7 +204,7 @@ def get_employees(
         "limit": limit,
         "total_employees": total_employees,
         "total_pages": total_pages,
-        "employees": employees
+        "employees": employees,
     }
 
 
@@ -370,7 +401,6 @@ def salary_analytics():
 def age_analytics():
     return get_age_analytics_data()
 
-
 @router.get(
     "/employee-wellbeing",
     tags=["Analytics"],
@@ -438,4 +468,5 @@ def salary_distribution():
     description="Returns employees grouped into predefined age categories."
 )
 def age_distribution():
+
     return get_age_distribution_data()
