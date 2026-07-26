@@ -11,6 +11,9 @@ import "./SmartAlerts.css";
 function SmartAlerts() {
 
   const [alerts, setAlerts] = useState([]);
+  const [highCount, setHighCount] = useState(0);
+  const [mediumCount, setMediumCount] = useState(0);
+  const [lowCount, setLowCount] = useState(0);
 
   useEffect(() => {
     loadAlerts();
@@ -34,6 +37,7 @@ function SmartAlerts() {
           title: "High Overall Attrition",
           message: `Overall attrition rate is ${attrition.attrition_rate}.`,
           priority: "High",
+          timestamp: new Date().toLocaleString(),
         });
       }
 
@@ -54,6 +58,7 @@ function SmartAlerts() {
               title: `${dept.department} Attrition`,
               message: `${rate.toFixed(1)}% employees have left.`,
               priority: "Medium",
+              timestamp: new Date().toLocaleString(),
             });
           }
 
@@ -68,6 +73,7 @@ function SmartAlerts() {
           title: "Low Job Satisfaction",
           message: `Average Job Satisfaction is ${wellbeing.average_job_satisfaction}`,
           priority: "Medium",
+          timestamp: new Date().toLocaleString(),
         });
 
       }
@@ -79,11 +85,23 @@ function SmartAlerts() {
           title: "Poor Work-Life Balance",
           message: `Average Work-Life Balance is ${wellbeing.average_work_life_balance}`,
           priority: "Medium",
+          timestamp: new Date().toLocaleString(),
         });
 
       }
 
       setAlerts(alertList);
+      setHighCount(
+        alertList.filter(a => a.priority === "High").length
+        );
+
+      setMediumCount(
+        alertList.filter(a => a.priority === "Medium").length
+        );
+
+      setLowCount(
+        alertList.filter(a => a.priority === "Low").length
+        );
 
     } catch (error) {
 
@@ -102,14 +120,38 @@ function SmartAlerts() {
       <p>
         AI-powered workforce alerts generated from live analytics.
       </p>
+      <div className="summary-cards">
+
+  <div className="summary-card">
+    <h3>Total Alerts</h3>
+    <h2>{alerts.length}</h2>
+  </div>
+
+  <div className="summary-card">
+    <h3>High</h3>
+    <h2>{highCount}</h2>
+  </div>
+
+  <div className="summary-card">
+    <h3>Medium</h3>
+    <h2>{mediumCount}</h2>
+  </div>
+
+  <div className="summary-card">
+    <h3>Low</h3>
+    <h2>{lowCount}</h2>
+  </div>
+
+</div>
 
       {alerts.map((alert, index) => (
 
         <AlertCard
-          key={index}
-          title={alert.title}
-          message={alert.message}
-          priority={alert.priority}
+            key={index}
+            title={alert.title}
+            message={alert.message}
+            priority={alert.priority}
+            timestamp={alert.timestamp}
         />
 
       ))}

@@ -1,13 +1,23 @@
 .alert-card{
-    background:white;
+    background:#fff;
     border-radius:12px;
     padding:20px;
     margin-bottom:20px;
     box-shadow:0 2px 8px rgba(0,0,0,.1);
+    transition:0.3s;
+}
+
+.alert-card:hover{
+    transform:translateY(-4px);
 }
 
 .alert-card h3{
     margin-bottom:10px;
+}
+
+.alert-card p{
+    margin:8px 0;
+    line-height:1.5;
 }
 
 .alert-card span{
@@ -15,13 +25,18 @@
 }
 
 .alert-card.high{
-    border-left:6px solid red;
+    border-left:8px solid #e53935;
 }
 
 .alert-card.medium{
-    border-left:6px solid orange;
+    border-left:8px solid #fb8c00;
 }
 
 .alert-card.low{
-    border-left:6px solid green;
+    border-left:8px solid #43a047;
+}
+.alert-time{
+    margin-top:15px;
+    font-size:13px;
+    color:#777;
 }

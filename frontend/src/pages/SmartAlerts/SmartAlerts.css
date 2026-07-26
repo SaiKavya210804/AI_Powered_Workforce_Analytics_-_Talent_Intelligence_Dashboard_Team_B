@@ -10,3 +10,28 @@
     color:#666;
     margin-bottom:30px;
 }
+.summary-cards{
+    display:flex;
+    gap:20px;
+    margin:25px 0 35px;
+    flex-wrap:wrap;
+}
+
+.summary-card{
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+    min-width:170px;
+    text-align:center;
+}
+
+.summary-card h3{
+    color:#666;
+    margin-bottom:10px;
+}
+
+.summary-card h2{
+    color:#1976d2;
+    font-size:32px;
+}
