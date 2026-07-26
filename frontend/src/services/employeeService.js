@@ -12,15 +12,31 @@ export const getEmployees = async (
   jobRole = "",
   attrition = ""
 ) => {
+  const params = {
+    page,
+    limit,
+  };
+
+  if (search && search.trim() !== "") {
+    params.search = search.trim();
+  }
+
+  if (department) {
+    params.department = department;
+  }
+
+  if (jobRole) {
+    params.jobRole = jobRole;
+  }
+
+  if (attrition) {
+    params.attrition = attrition;
+  }
+
+  console.log("Employees API Params:", params);
+
   const response = await api.get("/employees", {
-    params: {
-      page,
-      limit,
-      search,
-      department,
-      jobRole,
-      attrition,
-    },
+    params,
   });
 
   return response.data;

@@ -53,68 +53,59 @@ const [attrition, setAttrition] = useState("");
   });
 
   useEffect(() => {
-  loadEmployees(page);
-}, [
-  page,
-  search,
-  department,
-  jobRole,
-  attrition
-]);
-
+  loadEmployees();
+}, [page, search, department, jobRole, attrition]);
 
 useEffect(() => {
   setPage(1);
-}, [
-  search,
-  department,
-  jobRole,
-  attrition
-]);
+}, [search, department, jobRole, attrition]);
 
-  const loadEmployees = async (currentPage = 1) => {
+  const loadEmployees = async () => {
   try {
     setLoading(true);
 
     console.log("Sending Filters:", {
+      page,
       search,
       department,
       jobRole,
-      attrition
+      attrition,
     });
 
+
+
     const data = await getEmployees(
-      currentPage,
+      page,
       20,
       search,
       department,
       jobRole,
       attrition
     );
+    console.log("API Response:", data);
+console.log("Total:", data.total_employees);
+console.table(data.employees);
 
-    setEmployees(data.employees);
-    setTotalPages(data.total_pages);
-    setTotalEmployees(data.total_employees);
+    setEmployees(data.employees || []);
+    setTotalPages(data.total_pages || 1);
+    setTotalEmployees(data.total_employees || 0);
     setError("");
-
   } catch (err) {
-    console.error(err);
+    console.error("Employee Fetch Error:", err);
     setError("Unable to load employees.");
-
   } finally {
     setLoading(false);
   }
 };
 
- const handleRefresh = () => {
-
+const handleRefresh = () => {
   setSearch("");
   setDepartment("");
   setJobRole("");
   setAttrition("");
-
   setPage(1);
 
+  loadEmployees();
 };
 
   // Snackbar Helper
@@ -222,62 +213,78 @@ useEffect(() => {
   </Box>
 
   {/* Department Filter */}
-  <FormControl sx={{ minWidth: 180 }}>
-    <InputLabel>Department</InputLabel>
+  <FormControl sx={{ minWidth: 200 }}>
+  <InputLabel>Department</InputLabel>
 
-    <Select
-  value={department}
-  label="Department"
-  onChange={(e) => {
-    console.log("Department Selected:", e.target.value);
-    setDepartment(e.target.value);
-  }}
->
-      <MenuItem value="">All</MenuItem>
-      <MenuItem value="Research & Development">
-        Research & Development
-      </MenuItem>
-      <MenuItem value="Sales">Sales</MenuItem>
-      <MenuItem value="Human Resources">
-        Human Resources
-      </MenuItem>
-    </Select>
-  </FormControl>
+  <Select
+    value={department}
+    label="Department"
+    onChange={(e) => setDepartment(e.target.value)}
+  >
+    <MenuItem value="">All</MenuItem>
+
+    <MenuItem value="Sales">
+      Sales
+    </MenuItem>
+
+    <MenuItem value="Research & Development">
+      Research & Development
+    </MenuItem>
+
+    <MenuItem value="Human Resources">
+      Human Resources
+    </MenuItem>
+  </Select>
+</FormControl>
 
   {/* Job Role Filter */}
-  <FormControl sx={{ minWidth: 200 }}>
-    <InputLabel>Job Role</InputLabel>
+  <FormControl sx={{ minWidth: 220 }}>
+  <InputLabel>Job Role</InputLabel>
 
-    <Select
-  value={jobRole}
-  label="Job Role"
-  onChange={(e) => {
-    console.log("Job Role Selected:", e.target.value);
-    setJobRole(e.target.value);
-  }}
->
-      <MenuItem value="">All</MenuItem>
-      <MenuItem value="Manager">Manager</MenuItem>
-      <MenuItem value="Sales Executive">
-        Sales Executive
-      </MenuItem>
-      <MenuItem value="Research Scientist">
-        Research Scientist
-      </MenuItem>
-      <MenuItem value="Laboratory Technician">
-        Laboratory Technician
-      </MenuItem>
-      <MenuItem value="Healthcare Representative">
-        Healthcare Representative
-      </MenuItem>
-      <MenuItem value="Manufacturing Director">
-        Manufacturing Director
-      </MenuItem>
-      <MenuItem value="Human Resources">
-        Human Resources
-      </MenuItem>
-    </Select>
-  </FormControl>
+  <Select
+    value={jobRole}
+    label="Job Role"
+    onChange={(e) => setJobRole(e.target.value)}
+  >
+    <MenuItem value="">All</MenuItem>
+
+    <MenuItem value="Healthcare Representative">
+      Healthcare Representative
+    </MenuItem>
+
+    <MenuItem value="Human Resources">
+      Human Resources
+    </MenuItem>
+
+    <MenuItem value="Laboratory Technician">
+      Laboratory Technician
+    </MenuItem>
+
+    <MenuItem value="Manager">
+      Manager
+    </MenuItem>
+
+    <MenuItem value="Manufacturing Director">
+      Manufacturing Director
+    </MenuItem>
+
+    <MenuItem value="Research Director">
+      Research Director
+    </MenuItem>
+
+    <MenuItem value="Research Scientist">
+      Research Scientist
+    </MenuItem>
+
+    <MenuItem value="Sales Executive">
+      Sales Executive
+    </MenuItem>
+
+    <MenuItem value="Sales Representative">
+      Sales Representative
+    </MenuItem>
+  </Select>
+</FormControl>
 
   {/* Attrition Filter */}
   <FormControl sx={{ minWidth: 150 }}>
