@@ -62,17 +62,36 @@ useEffect(() => {
   setPage(1);
 }, [search, department, jobRole, attrition]);
 
-  const loadEmployees = async () => {
+const loadEmployees = async () => {
+
   try {
+
     setLoading(true);
 
-    console.log("Sending Filters:", {
-      page,
-      search,
-      department,
-      jobRole,
-      attrition,
-    });
+
+    const filters = {
+  page,
+  search,
+  department,
+  jobRole,
+  attrition,
+};
+
+    console.log(
+      "Sending Filters:",
+      {
+        page,
+        ...filters
+      }
+    );
+
+
+    // Save filters for Reports page
+    localStorage.setItem(
+      "employeeFilters",
+      JSON.stringify(filters)
+    );
+
 
     const data = await getEmployees(
       page,
@@ -83,39 +102,64 @@ useEffect(() => {
       attrition
     );
 
-    setEmployees(data.employees || []);
-    setTotalPages(data.total_pages || 1);
-    setTotalEmployees(data.total_employees || 0);
+
+    setEmployees(
+      data.employees || []
+    );
+
+
+    setTotalPages(
+      data.total_pages || 1
+    );
+
+
+    setTotalEmployees(
+      data.total_employees || 0
+    );
+
+
     setError("");
-  } catch (err) {
-    console.error("Employee Fetch Error:", err);
-    setError("Unable to load employees.");
+
+
+  } catch(err) {
+
+
+    console.error(
+      "Employee Fetch Error:",
+      err
+    );
+
+
+    setError(
+      "Unable to load employees."
+    );
+
+
   } finally {
+
     setLoading(false);
+
   }
+
 };
 
+// ==========================
+// Refresh Employees
+// ==========================
+
 const handleRefresh = () => {
+
   setSearch("");
   setDepartment("");
   setJobRole("");
   setAttrition("");
   setPage(1);
 
-  loadEmployees();
-};
+  localStorage.removeItem(
+    "employeeFilters"
+  );
 
-  // Snackbar Helper
-  const showSnackbar = (
-    message,
-    severity = "success"
-  ) => {
-    setSnackbar({
-      open: true,
-      message,
-      severity,
-    });
-  };
+};
 
   // ==========================
   // Create OR Update Employee
