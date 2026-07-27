@@ -2,148 +2,274 @@ import { useState } from "react";
 import ReportCard from "../../components/reports/ReportCard";
 import "./Reports.css";
 
+import { getEmployees } from "../../services/employeeService";
+import { exportEmployeesToPDF } from "../../utils/pdfExport";
+import { exportEmployeesToExcel } from "../../utils/excelExport";
+
 function Reports() {
 
   const [generatedReport, setGeneratedReport] = useState(null);
+  const [employees, setEmployees] = useState([]);
 
-  const handleGenerate = (title) => {
+  // ===========================
+  // Generate Report
+  // ===========================
 
-    let content = "";
+  const handleGenerate = async (title) => {
 
-    switch (title) {
+    try {
 
-      case "Workforce Summary Report":
-        content = `
-Total Employees : 10,000
-Departments : 3
-Average Age : 37.1 Years
-Average Income : $6,596
-Attrition Rate : 15.6%
-        `;
-        break;
+      const response = await getEmployees(1, 10000);
 
-      case "Employee Report":
-        content = `
-Employee data report generated successfully.
+      // depending on API response format
+      const employeeData =
+        response.employees ||
+        response.data ||
+        response;
 
-Includes:
-• Employee Details
-• Department
-• Salary
-• Performance
-        `;
-        break;
+      setEmployees(employeeData);
 
-      case "Analytics Report":
-        content = `
-Analytics Report
+      let reportContent = "";
 
-• Workforce Trends
-• Hiring Trends
-• Attrition Analysis
-• Performance Metrics
-        `;
-        break;
+      switch (title) {
 
-      case "Department Report":
-        content = `
-Department Report
+        case "Workforce Summary Report":
 
-• HR
-• Sales
-• Research & Development
+          reportContent = `
+Total Employees : ${employeeData.length}
 
-Department-wise employee statistics generated.
-        `;
-        break;
+Departments :
+${[...new Set(employeeData.map(emp => emp.Department))].join(", ")}
 
-      default:
-        content = "No report available.";
+Average Age :
+${(
+employeeData.reduce((sum, emp) => sum + emp.Age, 0)
+/ employeeData.length
+).toFixed(1)}
+
+Average Salary :
+$${(
+employeeData.reduce((sum, emp) => sum + emp.MonthlyIncome, 0)
+/ employeeData.length
+).toFixed(0)}
+
+Attrition Count :
+${employeeData.filter(emp => emp.Attrition === "Yes").length}
+`;
+
+          break;
+
+        case "Employee Report":
+
+          reportContent =
+`Employee report generated successfully.
+
+Total Employees : ${employeeData.length}
+
+You can now download
+the report as PDF or Excel.`;
+
+          break;
+
+        case "Analytics Report":
+
+          reportContent =
+`Analytics generated successfully.
+
+Employees : ${employeeData.length}
+
+Analytics data is ready
+for export.`;
+
+          break;
+
+        case "Department Report":
+
+          reportContent =
+`Departments Available :
+
+${[...new Set(employeeData.map(emp => emp.Department))].join("\n")}
+
+Department report generated successfully.`;
+
+          break;
+
+        default:
+
+          reportContent = "Report generated.";
+
+      }
+
+      setGeneratedReport({
+
+        title,
+
+        content: reportContent,
+
+      });
+
     }
 
-    setGeneratedReport({
-      title,
-      content,
-    });
+    catch (error) {
+
+      console.error(error);
+
+      alert("Unable to generate report.");
+
+    }
 
   };
 
-  const handlePDF = (title) => {
-    alert(`PDF download for "${title}" will be added next.`);
+  // ===========================
+  // PDF
+  // ===========================
+
+  const handlePDF = () => {
+
+    if (employees.length === 0) {
+
+      alert("Generate a report first.");
+
+      return;
+
+    }
+
+    exportEmployeesToPDF(employees);
+
   };
 
-  const handleExcel = (title) => {
-    alert(`Excel download for "${title}" will be added next.`);
+  // ===========================
+  // Excel
+  // ===========================
+
+  const handleExcel = () => {
+
+    if (employees.length === 0) {
+
+      alert("Generate a report first.");
+
+      return;
+
+    }
+
+    exportEmployeesToExcel(employees);
+
   };
 
   return (
+
     <div className="reports-container">
 
       <h1 className="reports-title">
+
         Reports
+
       </h1>
 
       <p className="reports-subtitle">
+
         Generate and download workforce reports.
+
       </p>
 
       <div className="report-grid">
 
         <ReportCard
+
           title="Workforce Summary Report"
+
           description="Generate a summary of workforce insights."
+
           onGenerate={handleGenerate}
+
           onPDF={handlePDF}
+
           onExcel={handleExcel}
+
         />
 
         <ReportCard
+
           title="Employee Report"
+
           description="Export employee information."
+
           onGenerate={handleGenerate}
+
           onPDF={handlePDF}
+
           onExcel={handleExcel}
+
         />
 
         <ReportCard
+
           title="Analytics Report"
+
           description="Download workforce analytics."
+
           onGenerate={handleGenerate}
+
           onPDF={handlePDF}
+
           onExcel={handleExcel}
+
         />
 
         <ReportCard
+
           title="Department Report"
+
           description="Generate department-wise workforce reports."
+
           onGenerate={handleGenerate}
+
           onPDF={handlePDF}
+
           onExcel={handleExcel}
+
         />
 
       </div>
 
-      {generatedReport && (
+      {
+
+      generatedReport && (
 
         <div
+
           style={{
-            marginTop: "40px",
-            padding: "20px",
-            background: "#fff",
-            borderRadius: "10px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
+
+            marginTop:40,
+
+            padding:20,
+
+            background:"#fff",
+
+            borderRadius:10,
+
+            boxShadow:"0 2px 8px rgba(0,0,0,.1)"
+
           }}
+
         >
 
           <h2>{generatedReport.title}</h2>
 
           <pre
+
             style={{
-              whiteSpace: "pre-wrap",
-              fontSize: "15px"
+
+              whiteSpace:"pre-wrap",
+
+              fontSize:15
+
             }}
+
           >
+
             {generatedReport.content}
+
           </pre>
 
         </div>
@@ -151,7 +277,9 @@ Department-wise employee statistics generated.
       )}
 
     </div>
+
   );
+
 }
 
 export default Reports;
