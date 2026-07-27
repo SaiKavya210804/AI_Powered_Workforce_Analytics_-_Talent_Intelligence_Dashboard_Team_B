@@ -5,12 +5,13 @@ import Layout from "../components/layout/Layout";
 
 import Dashboard from "../pages/Dashboard/Dashboard";
 import Employees from "../pages/Employees/Employees";
+import Departments from "../pages/Departments/Departments";
 import Analytics from "../pages/Analytics/Analytics";
 import AIAssistant from "../pages/AIAssistant/AIAssistant";
 import Reports from "../pages/Reports/Reports";
 import SmartAlerts from "../pages/SmartAlerts/SmartAlerts";
 import Settings from "../pages/Settings/Settings";
-
+import JobRoles from "../pages/JobRoles/JobRoles";
 
 function AppRoutes() {
     return (
@@ -24,6 +25,15 @@ function AppRoutes() {
                     path="employees" 
                     element={<Employees />} 
                 />
+                <Route
+                    path="departments"
+                    element={<Departments />}
+                />
+
+                <Route
+    path="job-roles"
+    element={<JobRoles />}
+/>
 
                 <Route 
                     path="analytics" 

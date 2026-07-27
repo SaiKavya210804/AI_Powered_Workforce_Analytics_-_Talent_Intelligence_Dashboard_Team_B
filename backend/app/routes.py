@@ -145,44 +145,72 @@ def test_ai_key():
     "/employees",
     tags=["Employees"],
     summary="Get all employees",
-    description="Returns a paginated list of employees with optional search."
+    description="Returns a paginated list of employees with optional search and filters."
 )
 def get_employees(
     page: int = Query(1, ge=1, description="Page number"),
-    limit: int = Query(20, ge=1, le=100, description="Number of employees per page"),
+    limit: int = Query(20, ge=1, le=100, description="Employees per page"),
+
     search: str | None = Query(
         None,
         description="Search by Employee ID, Department, Job Role, Gender or Attrition"
-    )
+    ),
+
+    department: str | None = Query(
+        None,
+        description="Filter by Department"
+    ),
+
+    jobRole: str | None = Query(
+        None,
+        description="Filter by Job Role"
+    ),
+
+    attrition: str | None = Query(
+        None,
+        description="Filter by Attrition"
+    ),
 ):
+    query: dict = {}
 
-    # Default MongoDB query
-    query = {}
-
-    # Apply search filter if provided
+    # ----------------------------
+    # Search
+    # ----------------------------
     if search:
-        query = {
-            "$or": [
-                {"EmpID": {"$regex": search, "$options": "i"}},
-                {"Department": {"$regex": search, "$options": "i"}},
-                {"JobRole": {"$regex": search, "$options": "i"}},
-                {"Gender": {"$regex": search, "$options": "i"}},
-                {"Attrition": {"$regex": search, "$options": "i"}}
-            ]
-        }
+        search = search.strip()
 
-    # Calculate how many records should be skipped
+    if search:
+        query["$or"] = [
+            {"EmpID": {"$regex": search, "$options": "i"}},
+            {"Department": {"$regex": search, "$options": "i"}},
+            {"JobRole": {"$regex": search, "$options": "i"}},
+            {"Gender": {"$regex": search, "$options": "i"}},
+            {"Attrition": {"$regex": search, "$options": "i"}},
+        ]
+
+    # ----------------------------
+    # Filters
+    # ----------------------------
+    if department:
+        query["Department"] = department.strip()
+
+    if jobRole:
+        query["JobRole"] = jobRole.strip()
+
+    if attrition:
+        query["Attrition"] = attrition.strip()
+
     skip = (page - 1) * limit
 
-    # Count matching employees
     total_employees = employees_collection.count_documents(query)
 
-    # Calculate total number of pages
     total_pages = math.ceil(total_employees / limit) if total_employees else 1
 
-    # Fetch matching employees excluding MongoDB's internal _id field
     employees = list(
-        employees_collection.find(query, {"_id": 0})
+        employees_collection.find(
+            query,
+            {"_id": 0}
+        )
         .skip(skip)
         .limit(limit)
     )
@@ -192,7 +220,7 @@ def get_employees(
         "limit": limit,
         "total_employees": total_employees,
         "total_pages": total_pages,
-        "employees": employees
+        "employees": employees,
     }
 
 @router.get(
@@ -388,7 +416,6 @@ def salary_analytics():
 def age_analytics():
     return get_age_analytics_data()
 
-
 @router.get(
     "/employee-wellbeing",
     tags=["Analytics"],
@@ -456,4 +483,5 @@ def salary_distribution():
     description="Returns employees grouped into predefined age categories."
 )
 def age_distribution():
+
     return get_age_distribution_data()

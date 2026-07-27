@@ -1,19 +1,79 @@
 import api from "./api";
 
+// ============================
+// Get Employees (Pagination + Search)
+// ============================
 
-export const getEmployees = async () => {
+export const getEmployees = async (
+  page = 1,
+  limit = 20,
+  search = "",
+  department = "",
+  jobRole = "",
+  attrition = ""
+) => {
+  const params = {
+    page,
+    limit,
+  };
 
-    const response = await api.get("/employees");
+  if (search && search.trim() !== "") {
+    params.search = search.trim();
+  }
 
-    return response.data;
+  if (department) {
+    params.department = department;
+  }
 
+  if (jobRole) {
+    params.jobRole = jobRole;
+  }
+
+  if (attrition) {
+    params.attrition = attrition;
+  }
+
+  console.log("Employees API Params:", params);
+
+  const response = await api.get("/employees", {
+    params,
+  });
+
+  return response.data;
 };
 
+// ============================
+// Get Employee By ID
+// ============================
 
-export const getEmployeeById = async (emp_id) => {
+export const getEmployeeById = async (empId) => {
+  const response = await api.get(`/employee/${empId}`);
+  return response.data;
+};
 
-    const response = await api.get(`/employee/${emp_id}`);
+// ============================
+// Create Employee
+// ============================
 
-    return response.data;
+export const createEmployee = async (employeeData) => {
+  const response = await api.post("/employee", employeeData);
+  return response.data;
+};
 
+// ============================
+// Update Employee
+// ============================
+
+export const updateEmployee = async (empId, employeeData) => {
+  const response = await api.put(`/employee/${empId}`, employeeData);
+  return response.data;
+};
+
+// ============================
+// Delete Employee
+// ============================
+
+export const deleteEmployee = async (empId) => {
+  const response = await api.delete(`/employee/${empId}`);
+  return response.data;
 };
