@@ -25,6 +25,8 @@ import {
   Select,
   MenuItem,
   InputLabel,
+  Pagination,
+  PaginationItem,
 } from "@mui/material";
 
 function Employees() {
@@ -72,8 +74,6 @@ useEffect(() => {
       attrition,
     });
 
-
-
     const data = await getEmployees(
       page,
       20,
@@ -82,9 +82,6 @@ useEffect(() => {
       jobRole,
       attrition
     );
-    console.log("API Response:", data);
-console.log("Total:", data.total_employees);
-console.table(data.employees);
 
     setEmployees(data.employees || []);
     setTotalPages(data.total_pages || 1);
@@ -213,29 +210,27 @@ const handleRefresh = () => {
   </Box>
 
   {/* Department Filter */}
-  <FormControl sx={{ minWidth: 200 }}>
-  <InputLabel>Department</InputLabel>
+  <FormControl sx={{ minWidth: 180 }}>
+    <InputLabel>Department</InputLabel>
 
-  <Select
-    value={department}
-    label="Department"
-    onChange={(e) => setDepartment(e.target.value)}
-  >
-    <MenuItem value="">All</MenuItem>
-
-    <MenuItem value="Sales">
-      Sales
-    </MenuItem>
-
-    <MenuItem value="Research & Development">
-      Research & Development
-    </MenuItem>
-
-    <MenuItem value="Human Resources">
-      Human Resources
-    </MenuItem>
-  </Select>
-</FormControl>
+    <Select
+  value={department}
+  label="Department"
+  onChange={(e) => {
+    console.log("Department Selected:", e.target.value);
+    setDepartment(e.target.value);
+  }}
+>
+      <MenuItem value="">All</MenuItem>
+      <MenuItem value="Research & Development">
+        Research & Development
+      </MenuItem>
+      <MenuItem value="Sales">Sales</MenuItem>
+      <MenuItem value="Human Resources">
+        Human Resources
+      </MenuItem>
+    </Select>
+  </FormControl>
 
   {/* Job Role Filter */}
   <FormControl sx={{ minWidth: 220 }}>
@@ -356,47 +351,34 @@ const handleRefresh = () => {
             onDelete={handleDeleteEmployee}
           />
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: "20px",
-              marginTop: "25px",
-            }}
-          >
-            <button
-              onClick={() =>
-                setPage(page - 1)
-              }
-              disabled={page === 1}
-              style={{
-                padding: "10px 20px",
-                cursor: "pointer",
-              }}
-            >
-              Previous
-            </button>
-
-            <h3>
-              Page {page} of {totalPages}
-            </h3>
-
-            <button
-              onClick={() =>
-                setPage(page + 1)
-              }
-              disabled={
-                page === totalPages
-              }
-              style={{
-                padding: "10px 20px",
-                cursor: "pointer",
-              }}
-            >
-              Next
-            </button>
-          </div>
+         <Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    mt: 4,
+  }}
+>
+  <Pagination
+    page={page}
+    count={totalPages}
+    onChange={(event, value) => setPage(value)}
+    color="primary"
+    size="large"
+    shape="rounded"
+    showFirstButton
+    showLastButton
+    siblingCount={2}
+    boundaryCount={1}
+    renderItem={(item) => (
+      <PaginationItem
+        {...item}
+        sx={{
+          fontWeight: "bold",
+        }}
+      />
+    )}
+  />
+</Box>
         </>
       )}
 

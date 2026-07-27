@@ -1,3 +1,8 @@
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+
 function EmployeeTable({
   employees,
   onEdit,
@@ -5,67 +10,76 @@ function EmployeeTable({
 }) {
   return (
     <table
-      border="1"
-      cellPadding="10"
       style={{
         width: "100%",
         borderCollapse: "collapse",
         marginTop: "20px",
+        fontSize: "14px",
       }}
     >
       <thead>
-        <tr>
-          <th>Employee ID</th>
-          <th>Age</th>
-          <th>Gender</th>
-          <th>Department</th>
-          <th>Job Role</th>
-          <th>Monthly Income</th>
-          <th>Attrition</th>
-          <th>Actions</th>
+        <tr
+          style={{
+            backgroundColor: "#f3f4f6",
+          }}
+        >
+          <th style={styles.th}>Employee ID</th>
+          <th style={styles.th}>Age</th>
+          <th style={styles.th}>Gender</th>
+          <th style={styles.th}>Department</th>
+          <th style={styles.th}>Job Role</th>
+          <th style={styles.th}>Monthly Income</th>
+          <th style={styles.th}>Attrition</th>
+          <th style={styles.th}>Actions</th>
         </tr>
       </thead>
 
       <tbody>
         {employees.map((emp) => (
-          <tr key={emp.EmpID}>
-            <td>{emp.EmpID}</td>
-            <td>{emp.Age}</td>
-            <td>{emp.Gender}</td>
-            <td>{emp.Department}</td>
-            <td>{emp.JobRole}</td>
-            <td>{emp.MonthlyIncome}</td>
-            <td>{emp.Attrition}</td>
+          <tr
+            key={emp.EmpID}
+            style={{
+              borderBottom: "1px solid #e5e7eb",
+            }}
+          >
+            <td style={styles.td}>{emp.EmpID}</td>
+            <td style={styles.td}>{emp.Age}</td>
+            <td style={styles.td}>{emp.Gender}</td>
+            <td style={styles.td}>{emp.Department}</td>
+            <td style={styles.td}>{emp.JobRole}</td>
+            <td style={styles.td}>
+              ₹{emp.MonthlyIncome.toLocaleString()}
+            </td>
+            <td style={styles.td}>{emp.Attrition}</td>
 
-            <td>
-              <button
-                onClick={() => onEdit(emp)}
-                style={{
-                  marginRight: "10px",
-                  background: "#2563eb",
-                  color: "white",
-                  border: "none",
-                  padding: "6px 12px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Edit
-              </button>
+            <td
+              style={{
+                ...styles.td,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "6px",
+              }}
+            >
+              <Tooltip title="Edit Employee">
+                <IconButton
+                  color="primary"
+                  size="small"
+                  onClick={() => onEdit(emp)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
 
-              <button
-                onClick={() => onDelete(emp.EmpID)}
-                style={{
-                  background: "#dc2626",
-                  color: "white",
-                  border: "none",
-                  padding: "6px 12px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Delete
-              </button>
+              <Tooltip title="Delete Employee">
+                <IconButton
+                  color="error"
+                  size="small"
+                  onClick={() => onDelete(emp.EmpID)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip>
             </td>
           </tr>
         ))}
@@ -73,5 +87,19 @@ function EmployeeTable({
     </table>
   );
 }
+
+const styles = {
+  th: {
+    padding: "12px",
+    textAlign: "left",
+    borderBottom: "2px solid #d1d5db",
+    fontWeight: "600",
+  },
+
+  td: {
+    padding: "10px 12px",
+    textAlign: "left",
+  },
+};
 
 export default EmployeeTable;
