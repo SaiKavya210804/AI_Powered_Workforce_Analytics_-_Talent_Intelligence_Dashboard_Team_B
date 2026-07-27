@@ -224,6 +224,81 @@ def get_employees(
     }
 
 @router.get(
+    "/employees/export",
+    tags=["Employees"],
+    summary="Export filtered employees",
+    description="Exports employees based on applied search and filter criteria."
+)
+def export_employees(
+
+    search: str | None = Query(
+        None,
+        description="Search by Employee ID, Department, Job Role, Gender or Attrition"
+    ),
+
+    department: str | None = Query(
+        None,
+        description="Filter by Department"
+    ),
+
+    jobRole: str | None = Query(
+        None,
+        description="Filter by Job Role"
+    ),
+
+    attrition: str | None = Query(
+        None,
+        description="Filter by Attrition"
+    ),
+):
+
+    query = {}
+
+    # ----------------------------
+    # Search
+    # ----------------------------
+    if search:
+        search = search.strip()
+
+        query["$or"] = [
+            {"EmpID": {"$regex": search, "$options": "i"}},
+            {"Department": {"$regex": search, "$options": "i"}},
+            {"JobRole": {"$regex": search, "$options": "i"}},
+            {"Gender": {"$regex": search, "$options": "i"}},
+            {"Attrition": {"$regex": search, "$options": "i"}},
+        ]
+
+
+    # ----------------------------
+    # Filters
+    # ----------------------------
+    if department:
+        query["Department"] = department.strip()
+
+
+    if jobRole:
+        query["JobRole"] = jobRole.strip()
+
+
+    if attrition:
+        query["Attrition"] = attrition.strip()
+
+
+    # Fetch filtered employees
+    employees = list(
+        employees_collection.find(
+            query,
+            {"_id": 0}
+        )
+    )
+
+
+    return {
+        "count": len(employees),
+        "employees": employees
+    }
+
+@router.get(
     "/employee/{emp_id}",
     tags=["Employees"],
     summary="Get employee by Employee ID",
