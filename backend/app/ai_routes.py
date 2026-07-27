@@ -2,15 +2,7 @@
 ai_routes.py
 -------------
 Adds an /ask-ai endpoint to your FastAPI app that answers natural
-language questions about the workforce data, using Snowflake for
-the data and Google's Gemini API for the reasoning -- since Cortex
-AI is blocked on this Snowflake trial account.
-
-Add to your .env:
-    GEMINI_API_KEY=your_key_from_aistudio.google.com
-
-Install what this needs:
-    pip install google-genai snowflake-connector-python python-dotenv
+language questions about the workforce data using Snowflake and Gemini.
 """
 
 import os
@@ -24,9 +16,13 @@ from app.snowflake_client import get_workforce_context_for_views
 load_dotenv()
 
 router = APIRouter()
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-GEMINI_MODEL = "gemini-flash-latest"  # fast + free-tier friendly; swap if a newer model is available on your key
+client = genai.Client(
+    api_key=os.getenv("GEMINI_API_KEY")
+)
+
+# Updated Gemini model
+GEMINI_MODEL = "gemini-3.6-flash"
 
 
 class AskAIRequest(BaseModel):
@@ -72,11 +68,16 @@ VIEW_SELECTION_RULES = [
     ),
 ]
 
-FALLBACK_VIEWS = ["dashboard_kpis", "attrition_summary", "department_summary"]
+FALLBACK_VIEWS = [
+    "dashboard_kpis",
+    "attrition_summary",
+    "department_summary",
+]
 
 
-def _select_views_for_question(question: str) -> list[str]:
+def _select_views_for_question(question: str):
     question_lower = question.lower()
+
     selected_views = []
     seen = set()
 
@@ -95,42 +96,57 @@ def _select_views_for_question(question: str) -> list[str]:
 
 @router.post("/ask-ai")
 def ask_ai(payload: AskAIRequest):
-    """
-    Answers a natural-language question about the workforce data.
-    Pulls live data from Snowflake, then asks Gemini to answer
-    using only that data.
-    """
+
     selected_views = _select_views_for_question(payload.question)
 
     try:
         context = get_workforce_context_for_views(selected_views)
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch Snowflake data: {str(e)}")
+        print("\n========== SNOWFLAKE ERROR ==========")
+        print(repr(e))
+        print("=====================================\n")
 
-    prompt = f"""You are a workforce analytics assistant. Use ONLY the data below to answer. Be concise.
-The following views were selected for this question: {", ".join(selected_views)}.
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to fetch Snowflake data: {str(e)}",
+        )
 
+    prompt = f"""
+You are an AI Workforce Analytics Assistant.
+
+Use ONLY the workforce information provided below.
+
+Answer clearly using markdown.
+
+Data:
 {context}
 
-QUESTION: {payload.question}
+Question:
+{payload.question}
 """
 
     try:
+
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=prompt,
         )
+
         answer = response.text
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"AI request failed: {str(e)}")
 
-    return {"question": payload.question, "answer": answer}
+        print("\n========== GEMINI ERROR ==========")
+        print(repr(e))
+        print("==================================\n")
 
+        raise HTTPException(
+            status_code=500,
+            detail=f"AI request failed: {str(e)}",
+        )
 
-# ---------------------------------------------------------
-# EXAMPLE USAGE (test in Swagger at /docs, or via curl):
-#
-# curl -X POST http://127.0.0.1:8000/ask-ai \
-#   -H "Content-Type: application/json" \
-#   -d '{"question": "Which department has the highest attrition?"}'
-# ---------------------------------------------------------
+    return {
+        "question": payload.question,
+        "answer": answer,
+    }

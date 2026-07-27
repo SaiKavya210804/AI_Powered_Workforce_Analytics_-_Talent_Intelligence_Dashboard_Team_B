@@ -1,0 +1,11 @@
+.chat-history {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fafafa;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}

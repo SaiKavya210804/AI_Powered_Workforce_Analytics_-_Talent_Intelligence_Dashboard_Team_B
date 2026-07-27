@@ -5,62 +5,87 @@ import PeopleIcon from "@mui/icons-material/People";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SmartToyIcon from "@mui/icons-material/SmartToy";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WorkIcon from "@mui/icons-material/Work";
 
 function Sidebar() {
+
   const menuItems = [
     {
       name: "Dashboard",
       path: "/",
-      icon: <DashboardIcon />,
+      icon: <DashboardIcon />
     },
     {
       name: "Employees",
       path: "/employees",
-      icon: <PeopleIcon />,
+      icon: <PeopleIcon />
     },
     {
       name: "Departments",
       path: "/departments",
-      icon: <ApartmentIcon />,
+      icon: <ApartmentIcon />
     },
     {
-    name: "Job Roles",
-    path: "/job-roles",
-    icon: <WorkIcon />
-},
+      name: "Job Roles",
+      path: "/job-roles",
+      icon: <WorkIcon />
+    },
     {
       name: "Analytics",
       path: "/analytics",
-      icon: <AnalyticsIcon />,
+      icon: <AnalyticsIcon />
     },
     {
       name: "AI Assistant",
       path: "/ai-assistant",
-      icon: <SmartToyIcon />,
+      icon: <SmartToyIcon />
+    },
+    {
+      name: "Reports",
+      path: "/reports",
+      icon: <AssessmentIcon />
+    },
+    {
+      name: "Smart Alerts",
+      path: "/smart-alerts",
+      icon: <NotificationsActiveIcon />
     },
     {
       name: "Settings",
       path: "/settings",
-      icon: <SettingsIcon />,
-    },
+      icon: <SettingsIcon />
+    }
   ];
 
   return (
     <aside className="sidebar">
+
       <h2>Workforce AI</h2>
 
       <nav>
+
         {menuItems.map((item) => (
-          <NavLink key={item.name} to={item.path}>
+
+          <NavLink
+            key={item.name}
+            to={item.path}
+          >
             {item.icon}
+
             <span>{item.name}</span>
+
           </NavLink>
+
         ))}
+
       </nav>
+
     </aside>
   );
+
 }
 
 export default Sidebar;

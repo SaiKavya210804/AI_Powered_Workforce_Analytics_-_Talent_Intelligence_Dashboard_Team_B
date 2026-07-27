@@ -1,0 +1,18 @@
+.reports-container{
+    padding:30px;
+}
+
+.reports-title{
+    margin-bottom:10px;
+}
+
+.reports-subtitle{
+    color:#666;
+    margin-bottom:30px;
+}
+
+.report-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+}
