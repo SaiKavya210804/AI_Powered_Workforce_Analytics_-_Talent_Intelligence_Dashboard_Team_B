@@ -211,6 +211,7 @@ def get_employees(
             query,
             {"_id": 0}
         )
+        .sort("EmpID", 1)      # Sort ascending by Employee ID
         .skip(skip)
         .limit(limit)
     )
