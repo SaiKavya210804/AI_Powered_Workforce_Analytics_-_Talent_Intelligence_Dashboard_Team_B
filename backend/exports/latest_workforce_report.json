@@ -1,0 +1,15 @@
+{
+    "title": "Automated Workforce Analytics Report",
+    "generated_at": "2026-07-29T20:23:05.800592",
+    "metrics": {
+        "total_employees": 10001,
+        "attrition_rate": "0.0%",
+        "average_salary": 0.0,
+        "department_breakdown": [
+            {
+                "department": "Unassigned",
+                "count": 10001
+            }
+        ]
+    }
+}
