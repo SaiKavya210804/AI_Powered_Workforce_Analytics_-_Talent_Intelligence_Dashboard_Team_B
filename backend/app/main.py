@@ -6,9 +6,13 @@ Initializes the FastAPI application and registers all API routes.
 
 from fastapi import FastAPI
 from app.routes import router
+from automation.scheduler import start_scheduler
 from app.ai_routes import router as ai_router
 
 # Create the FastAPI application
+
+
+
 app = FastAPI(
     title="AI-Powered Workforce Analytics & Talent Intelligence Dashboard",
     description=(
@@ -17,6 +21,10 @@ app = FastAPI(
     ),
     version="1.0.0",
 )
+@app.on_event("startup")
+def startup_event():
+
+    start_scheduler()
 
 # Register all API endpoints
 app.include_router(router)
