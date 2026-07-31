@@ -1,7 +1,12 @@
 Metric Name,Value
-Total Employees,10001
-Attrition Rate,0.0%
-Average Salary,0.0
+Total Employees,10003
+Attrition Rate,15.55%
+Average Salary,6601.66
 
 Department,Employee Count
-Unassigned,10001
+Research & Development,6590
+Sales,2963
+Human Resources,447
+Data Science,1
+Analytics,1
+Data Analytics,1

@@ -11,7 +11,7 @@ def refresh_analytics_cache():
     """
     logger.info("🔄 [Analytics Automation] Recalculating workforce KPIs...")
     try:
-        # 1. Fetch all employee records from MongoDB using PyMongo
+        # 1. Fetch all employee records from MongoDB
         employees = list(db.employees.find())
         
         if not employees:
@@ -20,21 +20,24 @@ def refresh_analytics_cache():
 
         total_employees = len(employees)
         
-        # 2. Calculate Attrition Rate
+        # 2. Calculate Attrition Rate (supports 'attrition' or 'Attrition')
         attrition_count = sum(
             1 for emp in employees 
-            if str(emp.get("attrition", "")).lower() in ["yes", "true", "1"]
+            if str(emp.get("attrition") or emp.get("Attrition") or "").lower() in ["yes", "true", "1"]
         )
         attrition_rate = round((attrition_count / total_employees) * 100, 2) if total_employees > 0 else 0.0
 
-        # 3. Calculate Average Salary
-        total_salary = sum(float(emp.get("salary", 0) or 0) for emp in employees)
+        # 3. Calculate Average Salary (supports 'salary', 'Salary', or 'MonthlyIncome')
+        total_salary = sum(
+            float(emp.get("salary") or emp.get("Salary") or emp.get("MonthlyIncome") or 0) 
+            for emp in employees
+        )
         avg_salary = round(total_salary / total_employees, 2) if total_employees > 0 else 0.0
 
-        # 4. Calculate Department Breakdown
+        # 4. Calculate Department Breakdown (supports 'department' or 'Department')
         dept_counts = {}
         for emp in employees:
-            dept = emp.get("department", "Unassigned")
+            dept = emp.get("department") or emp.get("Department") or "Unassigned"
             dept_counts[dept] = dept_counts.get(dept, 0) + 1
             
         department_distribution = [

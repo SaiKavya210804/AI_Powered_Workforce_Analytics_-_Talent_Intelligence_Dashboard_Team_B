@@ -15,15 +15,36 @@ Add these to your .env file:
 
 import os
 from decimal import Decimal
-import snowflake.connector
 from dotenv import load_dotenv
+
+try:
+    import snowflake.connector as snowflake_connector
+except ImportError:  # pragma: no cover - handled gracefully at runtime
+    snowflake_connector = None
 
 load_dotenv()
 
 
 def get_snowflake_connection():
     """Open a fresh connection to Snowflake using credentials from .env"""
-    return snowflake.connector.connect(
+    if snowflake_connector is None:
+        raise RuntimeError("snowflake-connector-python is not installed")
+
+    missing = [
+        key for key in [
+            "SNOWFLAKE_ACCOUNT",
+            "SNOWFLAKE_USER",
+            "SNOWFLAKE_PASSWORD",
+            "SNOWFLAKE_WAREHOUSE",
+            "SNOWFLAKE_DATABASE",
+            "SNOWFLAKE_SCHEMA",
+        ]
+        if not os.getenv(key)
+    ]
+    if missing:
+        raise RuntimeError(f"Missing Snowflake environment values: {', '.join(missing)}")
+
+    return snowflake_connector.connect(
         account=os.getenv("SNOWFLAKE_ACCOUNT"),
         user=os.getenv("SNOWFLAKE_USER"),
         password=os.getenv("SNOWFLAKE_PASSWORD"),
