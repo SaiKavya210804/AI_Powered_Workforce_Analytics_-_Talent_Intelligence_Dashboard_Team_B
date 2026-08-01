@@ -8,10 +8,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routes import router
+from automation.scheduler import start_scheduler
 from app.ai_routes import router as ai_router
 
 
 # Create the FastAPI application
+
+
+
 app = FastAPI(
     title="AI-Powered Workforce Analytics & Talent Intelligence Dashboard",
     description=(
@@ -20,6 +24,10 @@ app = FastAPI(
     ),
     version="1.0.0",
 )
+@app.on_event("startup")
+def startup_event():
+
+    start_scheduler()
 
 
 # Allow frontend (React/Vite) to communicate with backend

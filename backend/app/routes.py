@@ -173,13 +173,10 @@ def get_employees(
 ):
     query: dict = {}
 
-    # ----------------------------
     # Search
-    # ----------------------------
     if search:
         search = search.strip()
 
-    if search:
         query["$or"] = [
             {"EmpID": {"$regex": search, "$options": "i"}},
             {"Department": {"$regex": search, "$options": "i"}},
@@ -188,9 +185,7 @@ def get_employees(
             {"Attrition": {"$regex": search, "$options": "i"}},
         ]
 
-    # ----------------------------
     # Filters
-    # ----------------------------
     if department:
         query["Department"] = department.strip()
 
@@ -211,7 +206,7 @@ def get_employees(
             query,
             {"_id": 0}
         )
-        .sort("EmpID", 1)      # Sort ascending by Employee ID
+        .sort("EmpID", 1)
         .skip(skip)
         .limit(limit)
     )
