@@ -27,5 +27,6 @@ dist/
 # Node.js
 node_modules/
 
-# Logs
+# Application Logs
 logs/
+*.log
