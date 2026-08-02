@@ -37,6 +37,7 @@ It can also consume the current analytics cache format:
     }
 """
 
+from app.database import db
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -461,8 +462,8 @@ def check_work_life_balance(
 # -------------------------------------------------------------------
 
 def generate_smart_alerts(
-    analytics_data: Dict[str, Any],
-) -> List[Dict[str, Any]]:
+    analytics_data: Optional[Dict[str, Any]] = None,
+) -> bool:
     """
     Generate Smart Alerts from existing analytics data.
 
@@ -492,21 +493,37 @@ def generate_smart_alerts(
         }
 
     Returns:
-        List of generated alerts.
+        True if alert generation completed successfully,
+        otherwise False.
     """
 
     alerts = []
 
     try:
 
+        if analytics_data is None:
+
+            summary = db.analytics_cache.find_one(
+                {"_id": "latest_summary"}
+            )
+
+            if not summary:
+
+                log_warning(
+                    "No analytics summary found."
+                )
+
+                return False
+
+            analytics_data = summary
+
         if not isinstance(analytics_data, dict):
 
             log_error(
-                "Smart Alerts failed: analytics data "
-                "must be a dictionary."
+                "Smart Alerts failed: analytics data must be a dictionary."
             )
 
-            return alerts
+            return False
 
         log_info(
             "Smart Alerts evaluation started."
@@ -575,21 +592,23 @@ def generate_smart_alerts(
         # Final Result
         # -----------------------------------------------------------
 
-        if alerts:
+        db.alerts_cache.replace_one(
+            {"_id": "latest_alerts"},
+            {
+                "_id": "latest_alerts",
+                "alerts": alerts,
+                "analytics_updated_at": analytics_data.get("updated_at"),
+                "generated_at": datetime.now().isoformat(),
+            },
+            upsert=True,
+        )
 
-            log_info(
-                f"Smart Alerts evaluation completed. "
-                f"{len(alerts)} alert(s) generated."
-            )
+        log_info(
+            f"Smart Alerts evaluation completed. "
+            f"{len(alerts)} alert(s) generated."
+        )
 
-        else:
-
-            log_info(
-                "Smart Alerts evaluation completed. "
-                "No threshold violations detected."
-            )
-
-        return alerts
+        return True
 
     except Exception as error:
 
@@ -597,7 +616,7 @@ def generate_smart_alerts(
             f"Smart Alerts generation failed: {error}"
         )
 
-        return []
+        return False
 
 
 # -------------------------------------------------------------------
@@ -606,34 +625,19 @@ def generate_smart_alerts(
 
 if __name__ == "__main__":
 
-    # This test data is ONLY for local testing.
-    # It is not used by the actual generate_smart_alerts()
-    # function unless explicitly passed to it.
-
     test_analytics_data = {
         "attrition_rate": 22.5,
-
         "department_attrition": {
             "IT": 28.0,
             "HR": 12.0,
             "Finance": 8.0,
         },
-
         "job_satisfaction": 2.0,
-
         "work_life_balance": 2.5,
     }
 
-    alerts = generate_smart_alerts(
+    success = generate_smart_alerts(
         test_analytics_data
     )
 
-    print("\nGenerated Smart Alerts:\n")
-
-    for alert in alerts:
-
-        print(
-            f"[{alert['priority']}] "
-            f"{alert['metric']} - "
-            f"{alert['message']}"
-        )
+    print(f"Smart Alerts Generated: {success}")
