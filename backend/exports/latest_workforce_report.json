@@ -1,0 +1,31 @@
+{
+    "title": "Automated Workforce Analytics Report",
+    "generated_at": "2026-08-02T17:41:38.697653",
+    "metrics": {
+        "total_employees": 10002,
+        "attrition_rate": "15.55%",
+        "average_salary": 6601.87,
+        "department_breakdown": [
+            {
+                "department": "Analytics",
+                "count": 1
+            },
+            {
+                "department": "Data Analytics",
+                "count": 1
+            },
+            {
+                "department": "Human Resources",
+                "count": 447
+            },
+            {
+                "department": "Research & Development",
+                "count": 6590
+            },
+            {
+                "department": "Sales",
+                "count": 2963
+            }
+        ]
+    }
+}
