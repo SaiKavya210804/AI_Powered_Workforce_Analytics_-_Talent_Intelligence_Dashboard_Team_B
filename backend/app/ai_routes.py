@@ -10,6 +10,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from google import genai
 from dotenv import load_dotenv
+import time
 
 from app.snowflake_client import get_workforce_context_for_views
 
@@ -97,10 +98,21 @@ def _select_views_for_question(question: str):
 @router.post("/ask-ai")
 def ask_ai(payload: AskAIRequest):
 
+    total_start = time.time()
+
     selected_views = _select_views_for_question(payload.question)
 
     try:
+        # ---------------------------
+        # Snowflake Timing
+        # ---------------------------
+        snowflake_start = time.time()
+
         context = get_workforce_context_for_views(selected_views)
+
+        snowflake_time = time.time() - snowflake_start
+
+        print(f"\n✅ Snowflake Time: {snowflake_time:.2f} sec")
 
     except Exception as e:
         print("\n========== SNOWFLAKE ERROR ==========")
@@ -113,13 +125,65 @@ def ask_ai(payload: AskAIRequest):
         )
 
     prompt = f"""
-You are an AI Workforce Analytics Assistant.
+You are an Enterprise AI Workforce Analytics Assistant.
 
-Use ONLY the workforce information provided below.
+Use ONLY the provided workforce data.
 
-Answer clearly using markdown.
+Rules:
+- Maximum 100 words.
+- Use Markdown.
+- Keep responses concise.
+- Show only relevant metrics.
+- Maximum 3 key insights.
+- No unnecessary explanations.
+- No raw data.
 
-Data:
+If the user asks about attrition:
+
+## 📊 Attrition Summary
+
+| Department | Attrition Rate |
+|------------|---------------:|
+| Sales | ... |
+| Human Resources | ... |
+| Research & Development | ... |
+
+### 💡 Key Insights
+
+- ...
+- ...
+- ...
+
+If the user asks about salary:
+
+## 💰 Salary Summary
+
+| Department | Average Salary |
+|------------|---------------:|
+| Sales | ... |
+| Human Resources | ... |
+| Research & Development | ... |
+
+### 💡 Key Insights
+
+- ...
+- ...
+
+If the user asks about employee summary:
+
+## 👥 Employee Summary
+
+- Total Employees
+- Departments
+- Gender Distribution
+
+### 💡 Key Insights
+
+- ...
+- ...
+- ...
+
+Workforce Data:
 {context}
 
 Question:
@@ -128,12 +192,21 @@ Question:
 
     try:
 
+        # ---------------------------
+        # Gemini Timing
+        # ---------------------------
+        gemini_start = time.time()
+
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=prompt,
         )
 
-        answer = response.text
+        gemini_time = time.time() - gemini_start
+
+        print(f"🤖 Gemini Time: {gemini_time:.2f} sec")
+
+        answer = response.text.strip()
 
     except Exception as e:
 
@@ -145,6 +218,10 @@ Question:
             status_code=500,
             detail=f"AI request failed: {str(e)}",
         )
+
+    total_time = time.time() - total_start
+
+    print(f"🚀 Total Response Time: {total_time:.2f} sec\n")
 
     return {
         "question": payload.question,

@@ -28,6 +28,15 @@ import {
   Pagination,
   PaginationItem,
 } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from "@mui/material";
+
 const departmentJobRoles = {
   "Research & Development": [
     "Healthcare Representative",
@@ -252,6 +261,7 @@ const handleRefresh = () => {
   const handleDeleteEmployee = async (empId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this employee?"
+      
     );
 
     if (!confirmDelete) return;

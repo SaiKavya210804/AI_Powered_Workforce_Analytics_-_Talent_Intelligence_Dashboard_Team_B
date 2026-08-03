@@ -1,22 +1,216 @@
-.message {
-    max-width: 75%;
-    padding: 12px 16px;
-    margin: 10px 0;
-    border-radius: 12px;
-    font-size: 15px;
-    line-height: 1.5;
+.message-row{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    margin-bottom:20px;
+
 }
 
-.user {
-    background-color: #1976d2;
-    color: white;
-    margin-left: auto;
-    text-align: right;
+
+/* Alignment */
+
+.ai-row{
+
+    justify-content:flex-start;
+
 }
 
-.ai {
-    background-color: #f1f3f4;
-    color: #333;
-    margin-right: auto;
-    text-align: left;
+.user-row{
+
+    justify-content:flex-end;
+
+}
+
+
+/* Avatar */
+
+.avatar{
+
+    width:40px;
+
+    height:40px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-shrink:0;
+
+}
+
+.ai-avatar{
+
+    background:#2563EB;
+
+    color:white;
+
+}
+
+.user-avatar{
+
+    background:#e5e7eb;
+
+    color:#475569;
+
+}
+
+
+/* Message Content */
+
+.message-content{
+
+    display:flex;
+
+    flex-direction:column;
+
+    max-width:68%;
+
+}
+
+
+/* Sender Name */
+
+.sender-name{
+
+    font-size:12px;
+
+    font-weight:600;
+
+    color:#64748b;
+
+    margin-bottom:6px;
+
+}
+
+
+/* Bubble */
+
+.message{
+
+    padding:14px 18px;
+
+    font-size:15px;
+
+    line-height:1.6;
+
+    word-break:break-word;
+
+}
+
+
+/* AI */
+
+.ai-message{
+
+    background:#f8fafc;
+
+    border:1px solid #e2e8f0;
+
+    color:#1f2937;
+
+    border-radius:18px 18px 18px 6px;
+
+}
+
+
+/* User */
+
+.user-message{
+
+    background:#2563EB;
+
+    color:white;
+
+    border-radius:18px 18px 6px 18px;
+
+}
+
+
+/* Markdown */
+
+.message p{
+
+    margin:0;
+
+}
+
+.message ul{
+
+    margin:8px 0;
+
+    padding-left:18px;
+
+}
+
+.message li{
+
+    margin-bottom:4px;
+
+}
+/* Markdown Tables */
+
+.message table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  font-size: 14px;
+}
+
+.message th {
+  background: #2563eb;
+  color: white;
+  padding: 10px;
+  text-align: left;
+}
+
+.message td {
+  border: 1px solid #dbe3ec;
+  padding: 10px;
+}
+
+.message tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+/* Lists */
+
+.message ul,
+.message ol {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.message li {
+  margin-bottom: 6px;
+}
+
+/* Bold */
+
+.message strong {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Blockquote */
+
+.message blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 12px;
+  color: #475569;
+}
+
+/* Inline code */
+
+.message code {
+  background: #eef2ff;
+  padding: 2px 6px;
+  border-radius: 4px;
 }

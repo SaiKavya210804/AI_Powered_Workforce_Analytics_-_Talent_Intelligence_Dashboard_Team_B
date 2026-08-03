@@ -1,0 +1,475 @@
+/* ===========================
+   PAGE
+=========================== */
+
+.ai-page{
+    padding:32px;
+    min-height:100vh;
+    background:#e2e8f0;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+
+.ai-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+}
+
+.ai-title{
+    font-size:34px !important;
+    font-weight:700 !important;
+    color:#1f2937;
+    margin-bottom:6px !important;
+}
+
+.ai-subtitle{
+    color:#64748b;
+    font-size:15px !important;
+}
+
+
+/* ===========================
+   SECTION TITLE
+=========================== */
+
+.section-title{
+    font-size:20px !important;
+    font-weight:600 !important;
+    color:#334155;
+    margin-bottom:18px !important;
+}
+
+
+/* ===========================
+   QUICK ACTIONS
+=========================== */
+
+/* ===========================
+   QUICK ACTIONS
+=========================== */
+
+.quick-actions{
+
+    margin-bottom:24px;
+
+}
+
+.quick-chip-container{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:14px;
+
+}
+
+.quick-chip{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:12px 18px;
+
+    background:#ffffff;
+
+    border:1px solid #d7dee8;
+
+    border-radius:999px;
+
+    cursor:pointer;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#334155;
+
+    transition:all .25s ease;
+
+}
+
+.quick-chip:hover{
+
+    background:#2563eb;
+
+    color:white;
+
+    border-color:#2563eb;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 20px rgba(37,99,235,.20);
+
+}
+
+.chip-icon{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.quick-chip:hover .chip-icon{
+
+    color:white;
+
+}
+
+.chip-text{
+
+    white-space:nowrap;
+
+}
+/* ===========================
+   CONVERSATION HEADER
+=========================== */
+
+.conversation-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 24px;
+
+    background:#f8fafc;
+
+    border-bottom:1px solid #e2e8f0;
+
+}
+
+.conversation-title{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.conversation-heading{
+
+    font-size:17px !important;
+
+    font-weight:600 !important;
+
+    color:#1f2937;
+
+}
+
+.conversation-subtitle{
+
+    font-size:13px !important;
+
+    color:#64748b;
+
+}
+
+.conversation-status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.status-indicator{
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#22c55e;
+
+}
+
+.status-label{
+
+    font-size:13px !important;
+
+    color:#475569;
+
+    font-weight:500 !important;
+
+}
+
+/* ===========================
+   CHAT PANEL
+=========================== */
+
+/* ===========================
+   CONVERSATION CONTAINER
+=========================== */
+
+.conversation-container{
+
+    background:#ffffff;
+
+    border:1px solid #dbe3ec;
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(15,23,42,.06);
+
+}
+
+
+.conversation-header{
+
+    padding:18px 24px;
+
+    background:#fafafa;
+
+    border-bottom:1px solid #e5e7eb;
+
+    font-weight:600;
+
+    color:#334155;
+
+}
+
+
+.conversation-body{
+
+    padding:24px;
+
+    min-height:480px;
+
+    max-height:520px;
+
+    overflow-y:auto;
+
+    background:white;
+
+}
+
+
+/* ===========================
+   INPUT
+=========================== */
+
+.input-area{
+
+    margin-top:22px;
+
+}
+
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+.conversation-body::-webkit-scrollbar{
+
+    width:7px;
+
+}
+
+
+.conversation-body::-webkit-scrollbar-thumb{
+
+    background:#cbd5e1;
+
+    border-radius:20px;
+
+}
+
+
+.conversation-body::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:900px){
+
+    .ai-header{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:18px;
+
+    }
+
+    .quick-action-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .conversation-body{
+
+        min-height:400px;
+
+    }
+
+}
+
+@media(max-width:600px){
+
+    .ai-page{
+
+        padding:18px;
+
+    }
+
+    .ai-title{
+
+        font-size:28px !important;
+
+    }
+
+}
+/* =======================
+HEADER
+======================= */
+
+.ai-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+
+/* Left Side */
+
+.header-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:18px;
+
+}
+
+
+/* AI Logo */
+
+.ai-logo{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:16px;
+
+    background:#2563eb;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    box-shadow:0 10px 24px rgba(37,99,235,.18);
+
+}
+
+.ai-logo svg{
+
+    font-size:30px;
+
+}
+
+
+/* Title */
+
+.ai-title{
+
+    font-size:28px !important;
+
+    font-weight:700 !important;
+
+    color:#1f2937;
+
+}
+
+
+/* Gemini Status */
+
+.status-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:6px;
+
+    margin-top:5px;
+
+}
+
+.status-dot{
+
+    color:#22c55e;
+
+    font-size:12px !important;
+
+}
+
+.status-text{
+
+    color:#64748b;
+
+    font-size:14px !important;
+
+}
+
+
+/* Clear Button */
+
+.clear-chat-btn{
+
+    background:white !important;
+
+    border:1px solid #dbe3ec !important;
+
+    width:44px;
+
+    height:44px;
+
+    transition:.25s;
+
+}
+
+.clear-chat-btn:hover{
+
+    background:#fee2e2 !important;
+
+    color:#dc2626 !important;
+
+}
