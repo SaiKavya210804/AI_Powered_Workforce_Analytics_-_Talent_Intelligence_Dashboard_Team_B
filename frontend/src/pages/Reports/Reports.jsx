@@ -6,13 +6,29 @@ import "./Reports.css";
 import { exportFilteredEmployees } from "../../services/employeeService";
 import { exportEmployeesToPDF } from "../../utils/pdfExport";
 import { exportEmployeesToExcel } from "../../utils/excelExport";
+import { Snackbar, Alert } from "@mui/material";
 
 
 function Reports() {
 
   const [generatedReport, setGeneratedReport] = useState(null);
   const [employees, setEmployees] = useState([]);
+  const reportGenerated = employees.length > 0;
+const [snackbar, setSnackbar] = useState({
+  open: false,
+  message: "",
+  severity: "success",
+});
 
+const showSnackbar = (message, severity = "success") => {
+    console.log("Snackbar:", message);
+  setSnackbar({
+    open: true,
+    message,
+    severity,
+  });
+};
+const [loading, setLoading] = useState(false);
 
 
   // ============================
@@ -20,6 +36,9 @@ function Reports() {
   // ============================
 
   const handleGenerate = async (title) => {
+    setLoading(true);
+
+
 
     try {
 
@@ -55,7 +74,7 @@ function Reports() {
 
       if(employeeData.length === 0){
 
-        alert(
+        showSnackbar(
           "No employees found for selected filters."
         );
 
@@ -66,6 +85,7 @@ function Reports() {
 
 
       setEmployees(employeeData);
+      
 
 
 
@@ -116,168 +136,50 @@ function Reports() {
             )
           )
         ];
+        
 
 
 
-      let reportContent = "";
-
-
-
-      switch(title){
-
-
-        case "Workforce Summary Report":
-
-          reportContent = `
-
-Total Employees : ${totalEmployees}
-
-Departments :
-${departments.join(", ")}
-
-Average Age : ${averageAge}
-
-Average Salary : $${averageSalary}
-
-Attrition Count : ${attritionCount}
-
-Filters Applied:
-
-Search : ${filters.search || "All"}
-
-Department : ${filters.department || "All"}
-
-Job Role : ${filters.jobRole || "All"}
-
-Attrition : ${filters.attrition || "All"}
-
-`;
-
-        break;
-
-
-
-
-        case "Employee Report":
-
-          reportContent = `
-
-Employee Report
-
-Total Employees Exported :
-${totalEmployees}
-
-
-Filters Applied:
-
-Search :
-${filters.search || "All"}
-
-
-Department :
-${filters.department || "All"}
-
-
-Job Role :
-${filters.jobRole || "All"}
-
-
-Attrition :
-${filters.attrition || "All"}
-
-`;
-
-        break;
-
-
-
-
-        case "Analytics Report":
-
-          reportContent = `
-
-Analytics Report
-
-Employees Analysed :
-${totalEmployees}
-
-
-Average Age :
-${averageAge}
-
-
-Average Salary :
-$${averageSalary}
-
-
-Attrition Employees :
-${attritionCount}
-
-`;
-
-        break;
-
-
-
-
-        case "Department Report":
-
-          reportContent = `
-
-Department Report
-
-
-Departments:
-
-${departments.join("\n")}
-
-
-Total Employees :
-${totalEmployees}
-
-`;
-
-        break;
-
-
-
-
-        default:
-
-          reportContent =
-          "Report generated successfully.";
-
-      }
+      
 
 
 
 
       setGeneratedReport({
+  title,
+  generatedOn: new Date().toLocaleString(),
 
-        title,
+  totalEmployees,
+  averageAge,
+  averageSalary,
+  attritionCount,
+  departments,
 
-        content: reportContent
+  filters,
+});
+      showSnackbar(
+  "Report generated successfully!",
+  "success"
+);
 
-      });
-
-
-
-    }
-    catch(error){
-
-
-      console.error(
-        "Report Error:",
-        error
-      );
-
-
-      alert(
-        "Unable to generate report."
-      );
 
 
     }
+    catch (error) {
+  console.error("Report Error:", error);
+
+  if (error.response) {
+    console.log(error.response.data);
+  }
+
+  showSnackbar("Unable to generate report.", "error");
+}
+finally {
+
+    setLoading(false);
+
+  }
+
 
   };
 
@@ -294,7 +196,7 @@ ${totalEmployees}
 
     if(employees.length === 0){
 
-      alert(
+      showSnackbar(
         "Generate report first."
       );
 
@@ -322,7 +224,7 @@ ${totalEmployees}
 
     if(employees.length === 0){
 
-      alert(
+      showSnackbar(
         "Generate report first."
       );
 
@@ -339,10 +241,6 @@ ${totalEmployees}
 
 
 
-
-
-
-
   return (
 
     <div className="reports-container">
@@ -356,112 +254,197 @@ ${totalEmployees}
       <p className="reports-subtitle">
         Generate and download workforce reports.
       </p>
+      
 
 
+      {loading ? (
+
+  <div className="loading-state">
+    <h2>Generating Report...</h2>
+    <p>Please wait while we prepare your report.</p>
+  </div>
+
+) : (
+
+  <div className="report-grid">
+
+    <ReportCard
+      title="Workforce Summary Report"
+      description="Generate workforce summary."
+      onGenerate={handleGenerate}
+      onPDF={handlePDF}
+      onExcel={handleExcel}
+      reportGenerated={reportGenerated}
+    />
+    <ReportCard
+    title="Employee Report"
+    description="Export filtered employees."
+    onGenerate={handleGenerate}
+    onPDF={handlePDF}
+    onExcel={handleExcel}
+    reportGenerated={reportGenerated}
+  />
+
+  <ReportCard
+    title="Analytics Report"
+    description="Generate analytics report."
+    onGenerate={handleGenerate}
+    onPDF={handlePDF}
+    onExcel={handleExcel}
+    reportGenerated={reportGenerated}
+  />
+
+  <ReportCard
+    title="Department Report"
+    description="Generate department report."
+    onGenerate={handleGenerate}
+    onPDF={handlePDF}
+    onExcel={handleExcel}
+    reportGenerated={reportGenerated}
+  />
 
 
-      <div className="report-grid">
+    {/* Other ReportCards */}
+
+  </div>
+
+)}
 
 
-        <ReportCard
+      {generatedReport ? (
 
-          title="Workforce Summary Report"
+  <div className="generated-report">
 
-          description="Generate workforce summary."
+    <div className="report-header">
 
-          onGenerate={handleGenerate}
+      <div>
+        <h2>{generatedReport.title}</h2>
 
-          onPDF={handlePDF}
+        <p className="generated-date">
+    Generated on: {generatedReport.generatedOn}
+</p>
 
-          onExcel={handleExcel}
-
-        />
-
-
-
-        <ReportCard
-
-          title="Employee Report"
-
-          description="Export filtered employees."
-
-          onGenerate={handleGenerate}
-
-          onPDF={handlePDF}
-
-          onExcel={handleExcel}
-
-        />
-
-
-
-        <ReportCard
-
-          title="Analytics Report"
-
-          description="Generate analytics report."
-
-          onGenerate={handleGenerate}
-
-          onPDF={handlePDF}
-
-          onExcel={handleExcel}
-
-        />
-
-
-
-        <ReportCard
-
-          title="Department Report"
-
-          description="Generate department report."
-
-          onGenerate={handleGenerate}
-
-          onPDF={handlePDF}
-
-          onExcel={handleExcel}
-
-        />
-
-
+<p className="generated-count">
+    Exported Employees: {generatedReport.totalEmployees}
+</p>
       </div>
 
-
-
-
-
-      {
-        generatedReport &&
-
-        <div className="generated-report">
-
-
-          <h2>
-            {generatedReport.title}
-          </h2>
-
-
-
-          <pre>
-
-            {generatedReport.content}
-
-          </pre>
-
-
-        </div>
-
-      }
-
-
+      <span className="report-status">
+        Generated
+      </span>
 
     </div>
 
-  );
+    <hr />
+
+    <div className="summary-grid">
+
+      <div className="summary-item">
+        <h4>Total Employees</h4>
+        <p>{generatedReport.totalEmployees}</p>
+      </div>
+
+      <div className="summary-item">
+        <h4>Departments</h4>
+        <p>{generatedReport.departments.join(", ")}</p>
+      </div>
+
+      <div className="summary-item">
+        <h4>Average Salary</h4>
+        <p>${generatedReport.averageSalary}</p>
+      </div>
+
+      <div className="summary-item">
+        <h4>Average Age</h4>
+        <p>{generatedReport.averageAge}</p>
+      </div>
+
+      <div className="summary-item">
+        <h4>Attrition</h4>
+        <p>{generatedReport.attritionCount}</p>
+      </div>
+
+    </div>
+
+    <hr />
+
+    <h3>Applied Filters</h3>
+
+    <div className="filters">
+
+      <span className="filter-chip">
+        Search: {generatedReport.filters.search || " All"}
+      </span>
+
+      <span className="filter-chip">
+        Department: {generatedReport.filters.department || " All"}
+      </span>
+
+      <span className="filter-chip">
+        Job Role: {generatedReport.filters.jobRole || " All"}
+      </span>
+
+      <span className="filter-chip">
+        Attrition: {generatedReport.filters.attrition || " All"}
+      </span>
+
+    </div>
+
+  </div>
+
+) : (
+
+  <div className="empty-state">
+
+    <h2>No Report Generated</h2>
+
+    <p>
+      Select employee filters and click
+      <strong> Generate</strong> to create your first report.
+    </p>
+
+  </div>
+
+)}
+      <Snackbar
+  open={snackbar.open}
+  autoHideDuration={3000}
+  onClose={() =>
+    setSnackbar((prev) => ({
+      ...prev,
+      open: false,
+    }))
+  }
+  anchorOrigin={{
+    vertical: "bottom",
+    horizontal: "right",
+  }}
+>
+  <Alert
+    severity={snackbar.severity}
+    variant="filled"
+    onClose={() =>
+      setSnackbar((prev) => ({
+        ...prev,
+        open: false,
+      }))
+    }
+  >
+    {snackbar.message}
+  </Alert>
+</Snackbar>
+</div>
+
+);
 
 }
+
+
+
+    
+
+  
+
 
 
 export default Reports;

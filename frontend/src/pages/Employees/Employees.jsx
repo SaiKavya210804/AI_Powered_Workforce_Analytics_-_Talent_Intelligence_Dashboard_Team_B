@@ -28,7 +28,27 @@ import {
   Pagination,
   PaginationItem,
 } from "@mui/material";
+const departmentJobRoles = {
+  "Research & Development": [
+    "Healthcare Representative",
+    "Laboratory Technician",
+    "Manager",
+    "Manufacturing Director",
+    "Research Director",
+    "Research Scientist",
+  ],
 
+  Sales: [
+    "Manager",
+    "Sales Executive",
+    "Sales Representative",
+  ],
+
+  "Human Resources": [
+    "Human Resources",
+    "Manager",
+  ],
+};
 function Employees() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -53,6 +73,17 @@ const [attrition, setAttrition] = useState("");
     message: "",
     severity: "success",
   });
+  // Snackbar helper
+const showSnackbar = (
+  message,
+  severity = "success"
+) => {
+  setSnackbar({
+    open: true,
+    message,
+    severity,
+  });
+};
 
   useEffect(() => {
   loadEmployees();
@@ -166,34 +197,44 @@ const handleRefresh = () => {
   // ==========================
 
   const handleSaveEmployee = async (employee) => {
-    try {
-      if (selectedEmployee) {
-        await updateEmployee(employee.EmpID, employee);
+  try {
 
-        showSnackbar(
-          "Employee updated successfully!"
-        );
-      } else {
-        await createEmployee(employee);
+    if (selectedEmployee) {
 
-        showSnackbar(
-          "Employee added successfully!"
-        );
-      }
-
-      setOpenForm(false);
-      setSelectedEmployee(null);
-
-      loadEmployees(page);
-    } catch (err) {
-      console.error(err);
+      await updateEmployee(employee.EmpID, employee);
 
       showSnackbar(
-        "Unable to save employee.",
-        "error"
+        "Employee updated successfully!"
       );
+
+    } else {
+
+      await createEmployee(employee);
+
+      showSnackbar(
+        "Employee added successfully!"
+      );
+
     }
-  };
+
+    setOpenForm(false);
+
+    setSelectedEmployee(null);
+
+    await loadEmployees();
+
+  } catch (err) {
+
+    console.error(err);
+
+    showSnackbar(
+      err.response?.data?.detail ||
+      "Unable to save employee.",
+      "error"
+    );
+
+  }
+};
 
   // ==========================
   // Edit Employee
@@ -261,9 +302,13 @@ const handleRefresh = () => {
   value={department}
   label="Department"
   onChange={(e) => {
-    console.log("Department Selected:", e.target.value);
-    setDepartment(e.target.value);
-  }}
+  const value = e.target.value;
+
+  setDepartment(value);
+
+  // Reset Job Role when department changes
+  setJobRole("");
+}}
 >
       <MenuItem value="">All</MenuItem>
       <MenuItem value="Research & Development">
@@ -287,41 +332,17 @@ const handleRefresh = () => {
   >
     <MenuItem value="">All</MenuItem>
 
-    <MenuItem value="Healthcare Representative">
-      Healthcare Representative
+{(
+  department
+    ? departmentJobRoles[department]
+    : Object.values(departmentJobRoles).flat()
+)
+  .filter((role, index, array) => array.indexOf(role) === index)
+  .map((role) => (
+    <MenuItem key={role} value={role}>
+      {role}
     </MenuItem>
-
-    <MenuItem value="Human Resources">
-      Human Resources
-    </MenuItem>
-
-    <MenuItem value="Laboratory Technician">
-      Laboratory Technician
-    </MenuItem>
-
-    <MenuItem value="Manager">
-      Manager
-    </MenuItem>
-
-    <MenuItem value="Manufacturing Director">
-      Manufacturing Director
-    </MenuItem>
-
-    <MenuItem value="Research Director">
-      Research Director
-    </MenuItem>
-
-    <MenuItem value="Research Scientist">
-      Research Scientist
-    </MenuItem>
-
-    <MenuItem value="Sales Executive">
-      Sales Executive
-    </MenuItem>
-
-    <MenuItem value="Sales Representative">
-      Sales Representative
-    </MenuItem>
+  ))}
   </Select>
 </FormControl>
 

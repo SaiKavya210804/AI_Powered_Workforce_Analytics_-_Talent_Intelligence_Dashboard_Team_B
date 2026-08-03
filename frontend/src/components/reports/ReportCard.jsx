@@ -16,7 +16,8 @@ function ReportCard({
   description,
   onGenerate,
   onPDF,
-  onExcel
+  onExcel,
+  reportGenerated
 }) {
   return (
     <Card className="report-card">
@@ -54,6 +55,7 @@ function ReportCard({
             variant="outlined"
             startIcon={<PictureAsPdfIcon />}
             onClick={() => onPDF(title)}
+            disabled={!reportGenerated}
           >
             PDF
           </Button>
@@ -62,6 +64,7 @@ function ReportCard({
             variant="outlined"
             startIcon={<TableChartIcon />}
             onClick={() => onExcel(title)}
+            disabled={!reportGenerated}
           >
             Excel
           </Button>
