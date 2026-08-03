@@ -39,7 +39,7 @@ function ReportCard({
         <Stack
           direction="row"
           spacing={2}
-          marginTop={3}
+          sx={{ mt: 3 }}
         >
 
           <Button
@@ -67,7 +67,6 @@ function ReportCard({
           </Button>
 
         </Stack>
-
       </CardContent>
     </Card>
   );

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import MetricCard from "../../components/cards/MetricCard";
 
 import PageHeader from "../../components/common/PageHeader";
+import Loader from "../../components/common/Loader";
+import ErrorMessage from "../../components/common/ErrorMessage";
 
 
 import JobRoleChart from "../../components/charts/JobRoleChart";
@@ -43,6 +45,8 @@ function Analytics() {
     const [experienceData, setExperienceData] = useState(null);
 
     const [ageAnalyticsData, setAgeAnalyticsData] = useState(null);
+
+    const [error, setError] = useState(null);
 
 
 
@@ -143,14 +147,16 @@ function Analytics() {
             }
 
 
-            catch(error) {
-
+            catch (err) {
 
                 console.error(
                     "Analytics API Error:",
-                    error
+                    err
                 );
 
+                setError(
+                    "Unable to load analytics data."
+                );
 
             }
 
@@ -168,6 +174,14 @@ function Analytics() {
 
 
 
+    if (error) {
+        return (
+            <ErrorMessage
+                message={error}
+            />
+        );
+}
+
     if (
 
         !analyticsData ||
@@ -180,9 +194,11 @@ function Analytics() {
 
     ) {
 
-
-        return <h2>Loading Analytics...</h2>;
-
+        return (
+            <Loader
+                message="Loading Analytics..."
+            />
+        );
 
     }
 
@@ -261,7 +277,9 @@ function Analytics() {
 
                     title="Average Age"
 
-                    value={`${Math.round(ageAnalyticsData.average_age)} years`}
+                    value={`${Math.round(
+                        ageAnalyticsData.average_age ?? 0
+                    )} years`}
 
                     subtitle="Average workforce age"
 
@@ -278,7 +296,7 @@ function Analytics() {
 
                     value={
                         `$${Math.round(
-                            analyticsData.salary.average_salary
+                            analyticsData.salary.average_salary ?? 0
                         ).toLocaleString()}`
                     }
 
@@ -296,7 +314,9 @@ function Analytics() {
 
                     title="Average Experience"
 
-                    value={`${Math.round(experienceData.average_experience)} years`}
+                    value={`${Math.round(
+                        experienceData.average_experience ?? 0
+                    )} years`}
 
                     subtitle="Average employee tenure"
 
@@ -312,7 +332,7 @@ function Analytics() {
 
                     title="Maximum Experience"
 
-                    value={`${experienceData.maximum_experience} years`}
+                    value={`${experienceData.maximum_experience ?? 0} years`}
 
                     subtitle="Highest employee tenure"
 

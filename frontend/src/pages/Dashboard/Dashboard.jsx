@@ -1,29 +1,23 @@
 import { useEffect, useState } from "react";
 
-
 import MetricCard from "../../components/cards/MetricCard";
-
 
 import GenderDistributionChart from "../../components/charts/GenderDistributionChart";
 import AttritionChart from "../../components/charts/AttritionChart";
 import DepartmentChart from "../../components/charts/DepartmentChart";
 
-
 import PageHeader from "../../components/common/PageHeader";
-
+import Loader from "../../components/common/Loader";
+import ErrorMessage from "../../components/common/ErrorMessage";
 
 import { getDashboardData } from "../../services/dashboardService";
-
 
 import {
     getAttritionData,
     getDepartmentData
 } from "../../services/analyticsService";
 
-
-
 function Dashboard() {
-
 
     const [dashboardData, setDashboardData] = useState(null);
 
@@ -33,18 +27,11 @@ function Dashboard() {
 
     const [error, setError] = useState(null);
 
-
-
-
-
     useEffect(() => {
-
 
         const fetchDashboard = async () => {
 
-
             try {
-
 
                 const [
                     dashboard,
@@ -61,84 +48,55 @@ function Dashboard() {
 
                 ]);
 
-
-
                 setDashboardData(dashboard);
 
                 setAttritionData(attrition);
 
                 setDepartmentData(departments);
 
-
-
             }
 
-
-            catch(error) {
-
+            catch (err) {
 
                 console.error(
                     "Dashboard API Error:",
-                    error
+                    err
                 );
-
 
                 setError(
-                    "Unable to load dashboard data"
+                    "Unable to load dashboard data."
                 );
-
 
             }
 
-
         };
-
-
 
         fetchDashboard();
 
-
-
     }, []);
 
-
-
-
-
-
-
-    if(error) {
-
-        return <h2>{error}</h2>;
-
+    if (error) {
+        return (
+            <ErrorMessage
+                message={error}
+            />
+        );
     }
 
-
-
-
-
-
-
-    if(
+    if (
         !dashboardData ||
         !attritionData
     ) {
-
-        return <h2>Loading Dashboard...</h2>;
-
+        return (
+            <Loader
+                message="Loading Dashboard..."
+            />
+        );
     }
-
-
-
-
-
-
 
     return (
 
-
         <div>
-
 
             {/* Page Title Section */}
 
@@ -150,17 +108,9 @@ function Dashboard() {
 
             />
 
-
-
-
-
-
-
             {/* KPI Section */}
 
-
             <section>
-
 
                 <h2 className="section-title">
 
@@ -168,13 +118,7 @@ function Dashboard() {
 
                 </h2>
 
-
-
-
-
                 <div className="dashboard-grid">
-
-
 
                     <MetricCard
                         
@@ -188,10 +132,6 @@ function Dashboard() {
 
                     />
 
-
-
-
-
                     <MetricCard
 
                         title="Departments"
@@ -203,10 +143,6 @@ function Dashboard() {
                         icon="🏢"
 
                     />
-
-
-
-
 
                     <MetricCard
 
@@ -220,25 +156,19 @@ function Dashboard() {
 
                     />
 
-
-
-
-
                     <MetricCard
 
                         title="Average Monthly Income"
 
-                        value={`$${dashboardData.average_monthly_income.toLocaleString()}`}
+                        value={`$${(
+                            dashboardData.average_monthly_income ?? 0
+                        ).toLocaleString()}`}
 
                         subtitle="Average employee salary"
 
                         icon="💰"
 
                     />
-
-
-
-
 
                     <MetricCard
 
@@ -252,27 +182,13 @@ function Dashboard() {
 
                     />
 
-
-
                 </div>
-
 
             </section>
 
-
-
-
-
-
-
-
-
             {/* Charts Section */}
 
-
-
             <section>
-
 
                 <h2 className="section-title">
 
@@ -280,16 +196,7 @@ function Dashboard() {
 
                 </h2>
 
-
-
-
-
-
                 <div className="dashboard-charts">
-
-
-
-
 
                     <GenderDistributionChart
 
@@ -297,23 +204,11 @@ function Dashboard() {
 
                     />
 
-
-
-
-
-
-
                     <AttritionChart
 
                         data={attritionData}
 
                     />
-
-
-
-
-
-
 
                     <DepartmentChart
 
@@ -321,25 +216,14 @@ function Dashboard() {
 
                     />
 
-
-
                 </div>
-
 
             </section>
 
-
-
-
-
         </div>
-
 
     );
 
-
 }
-
-
 
 export default Dashboard;

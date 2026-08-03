@@ -1,10 +1,14 @@
-import { Alert } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 
-function ErrorMessage({ message }) {
+function ErrorMessage({
+  message = "Something went wrong. Please try again.",
+}) {
   return (
-    <Alert severity="error">
-      {message}
-    </Alert>
+    <Box sx={{ mt: 2, mb: 2 }}>
+      <Alert severity="error" variant="filled">
+        {message}
+      </Alert>
+    </Box>
   );
 }
 

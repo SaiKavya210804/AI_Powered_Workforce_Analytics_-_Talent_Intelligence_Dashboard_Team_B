@@ -1,18 +1,24 @@
-function DepartmentStats({ departments }) {
+function DepartmentStats({ departments = [] }) {
   const totalDepartments = departments.length;
 
   const totalEmployees = departments.reduce(
-  (sum, dept) => sum + dept.employee_count,
-  0
-);
-
-  const largestDepartment = departments.reduce((a, b) =>
-    a.employee_count > b.employee_count ? a : b
+    (sum, dept) => sum + (dept.employee_count || 0),
+    0
   );
 
-  const smallestDepartment = departments.reduce((a, b) =>
-    a.employee_count < b.employee_count ? a : b
-  );
+  const largestDepartment =
+    departments.length > 0
+      ? departments.reduce((a, b) =>
+          a.employee_count > b.employee_count ? a : b
+        )
+      : null;
+
+  const smallestDepartment =
+    departments.length > 0
+      ? departments.reduce((a, b) =>
+          a.employee_count < b.employee_count ? a : b
+        )
+      : null;
 
   const cards = [
     {
@@ -25,11 +31,11 @@ function DepartmentStats({ departments }) {
     },
     {
       title: "Largest Department",
-      value: largestDepartment.department,
+      value: largestDepartment?.department || "-",
     },
     {
       title: "Smallest Department",
-      value: smallestDepartment.department,
+      value: smallestDepartment?.department || "-",
     },
   ];
 

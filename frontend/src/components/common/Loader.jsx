@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from "@mui/material";
 
-function Loader() {
+function Loader({ message = "Loading..." }) {
   return (
     <Box
       sx={{
@@ -8,13 +8,21 @@ function Loader() {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        mt: 5,
+        minHeight: "300px",
+        width: "100%",
       }}
     >
-      <CircularProgress />
+      <CircularProgress size={45} />
 
-      <Typography sx={{ mt: 2 }}>
-        Loading Employees...
+      <Typography
+        variant="body1"
+        sx={{
+          mt: 2,
+          color: "text.secondary",
+          fontWeight: 500,
+        }}
+      >
+        {message}
       </Typography>
     </Box>
   );
