@@ -1,8 +1,5 @@
 import "./ChatInput.css";
 
-import SendIcon from "@mui/icons-material/Send";
-
-
 function ChatInput({
 
   value,
@@ -13,7 +10,6 @@ function ChatInput({
 
 }) {
 
-
   const handleSend = () => {
 
     if (!value.trim()) return;
@@ -22,18 +18,13 @@ function ChatInput({
 
   };
 
-
-
   return (
 
-    <div className="chat-input-wrapper">
-
+    <div className="chat-input-container">
 
       <textarea
 
-        className="chat-textarea"
-
-        rows="1"
+        rows="3"
 
         placeholder="Ask something about your workforce..."
 
@@ -41,10 +32,9 @@ function ChatInput({
 
         onChange={onChange}
 
-        onKeyDown={(e)=>{
+        onKeyDown={(e) => {
 
-
-          if(e.key==="Enter" && !e.shiftKey){
+          if (e.key === "Enter" && !e.shiftKey) {
 
             e.preventDefault();
 
@@ -52,32 +42,18 @@ function ChatInput({
 
           }
 
-
         }}
 
       />
 
-
-
-      <button
-
-        className="send-button"
-
-        onClick={handleSend}
-
-      >
-
-        <SendIcon />
-
+      <button onClick={handleSend}>
+        Send
       </button>
-
-
 
     </div>
 
   );
 
 }
-
 
 export default ChatInput;

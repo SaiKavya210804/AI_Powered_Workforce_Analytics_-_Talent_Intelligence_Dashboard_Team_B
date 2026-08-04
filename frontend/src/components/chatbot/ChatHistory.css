@@ -9,12 +9,3 @@
     border-radius: 10px;
     border: 1px solid #ddd;
 }
-.chat-history{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:8px;
-
-}

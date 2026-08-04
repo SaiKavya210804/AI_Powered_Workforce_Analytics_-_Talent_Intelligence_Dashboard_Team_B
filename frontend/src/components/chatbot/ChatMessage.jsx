@@ -29,9 +29,7 @@ function ChatMessage({ message, sender }) {
             isAI ? "ai-message" : "user-message"
           }`}
         >
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
-            {message}
-          </ReactMarkdown>
+          <ReactMarkdown>{message}</ReactMarkdown>
         </div>
 
       </div>
@@ -45,7 +43,6 @@ function ChatMessage({ message, sender }) {
     </div>
 
   );
-
 }
 
 export default ChatMessage;
